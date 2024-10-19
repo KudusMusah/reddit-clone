@@ -14,3 +14,5 @@ final class CommunityFailureState extends CommunityState {
 
   CommunityFailureState(this.message);
 }
+
+final class GetUserCommunitySuccess extends CommunityState {}

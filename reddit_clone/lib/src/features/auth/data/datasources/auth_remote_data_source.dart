@@ -28,23 +28,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   CollectionReference get _users => _firestore.collection("users");
 
   @override
-  Stream<User?> authStateChanges() {
-    try {
-      return _firebaseAuth.authStateChanges();
-    } catch (e) {
-      throw AuthException(e.toString());
-    }
-  }
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 
   @override
   Stream<UserModel> getUserWithId(String uid) {
-    try {
-      return _users.doc(uid).snapshots().map(
-            (e) => UserModel.fromJson(e.data() as Map<String, dynamic>),
-          );
-    } catch (e) {
-      throw AuthException(e.toString());
-    }
+    return _users.doc(uid).snapshots().map(
+          (e) => UserModel.fromJson(e.data() as Map<String, dynamic>),
+        );
   }
 
   @override

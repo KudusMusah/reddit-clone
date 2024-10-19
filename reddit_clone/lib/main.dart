@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/dependency_injection.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
 import 'package:reddit_clone/src/core/routes/routes.dart';
 import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
@@ -27,6 +28,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => serviceLocator<CommunityBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<UserCommunitiesCubit>(),
         ),
       ],
       child: const MyApp(),

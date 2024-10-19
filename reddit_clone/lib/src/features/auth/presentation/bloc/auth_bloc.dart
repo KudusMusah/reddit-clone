@@ -44,13 +44,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _appUserCubit.onUserError();
       },
       (r) {
-        r.listen((user) {
-          if (user == null) {
-            _appUserCubit.onUserLoggedOut();
-          } else {
-            _appUserCubit.onUserAuthenticated(user.uid);
-          }
-        });
+        r.listen(
+          (user) {
+            if (user == null) {
+              _appUserCubit.onUserLoggedOut();
+            } else {
+              _appUserCubit.onUserAuthenticated(user.uid);
+            }
+          },
+          onError: (object) {
+            _appUserCubit.onUserError();
+          },
+        );
       },
     );
   }

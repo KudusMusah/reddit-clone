@@ -28,4 +28,11 @@ class CommunityRepositoryImpl implements CommunityRepository {
       return left(CommunityFailure(e.message));
     }
   }
+
+  @override
+  Either<Failure, Stream<List<CommunityModel>>> getUserCommunities(
+    String uid,
+  ) {
+    return right(communityRemoteDatasource.getUserCommunities(uid));
+  }
 }

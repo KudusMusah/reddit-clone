@@ -4,6 +4,7 @@ import 'package:reddit_clone/src/features/communities/data/models/community_mode
 
 abstract interface class CommunityRemoteDatasource {
   Future<void> createCommunity(CommunityModel community);
+  Stream<List<CommunityModel>> getUserCommunities(String uid);
 }
 
 class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
@@ -31,5 +32,21 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
       }
       throw CommunityException(e.toString());
     }
+  }
+
+  @override
+  Stream<List<CommunityModel>> getUserCommunities(String uid) {
+    return _community
+        .where("members", arrayContains: uid)
+        .snapshots()
+        .map((event) {
+      List<CommunityModel> communities = [];
+      for (var doc in event.docs) {
+        communities.add(
+          CommunityModel.fromJson(doc.data() as Map<String, dynamic>),
+        );
+      }
+      return communities;
+    });
   }
 }

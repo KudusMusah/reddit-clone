@@ -1,4 +1,4 @@
-import 'package:reddit_clone/src/features/communities/domain/entites/community_entity.dart';
+import 'package:reddit_clone/src/core/entities/community_entity.dart';
 
 class CommunityModel extends CommunityEntity {
   CommunityModel({
@@ -27,9 +27,9 @@ class CommunityModel extends CommunityEntity {
       name: map['name'] as String,
       banner: map['banner'] as String,
       profileImage: map['profileImage'] as String,
-      members: List<String>.from((map['members'] as List<String>)),
+      members: List<String>.from((map['members'] as List<dynamic>)),
       mods: List<String>.from(
-        (map['mods'] as List<String>),
+        (map['mods'] as List<dynamic>),
       ),
     );
   }

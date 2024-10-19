@@ -13,12 +13,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Either<Failure, Stream<User?>> authStateChanges() {
-    try {
-      final stream = authRemoteDataSource.authStateChanges();
-      return right(stream);
-    } on AuthException catch (e) {
-      return left(AuthFailure(e.message));
-    }
+    final stream = authRemoteDataSource.authStateChanges();
+    return right(stream);
   }
 
   @override

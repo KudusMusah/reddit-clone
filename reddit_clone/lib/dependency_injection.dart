@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
 import 'package:reddit_clone/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:reddit_clone/src/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:reddit_clone/src/features/auth/domain/repository/auth_repository.dart';
@@ -15,6 +16,7 @@ import 'package:reddit_clone/src/features/communities/data/datasources/community
 import 'package:reddit_clone/src/features/communities/data/repository/community_repository_impl.dart';
 import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/create_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/get_user_communities_usecase.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -93,7 +95,17 @@ void _initCommunity() {
     ..registerFactory(
       () => CreateCommunityUsecase(communityRepository: serviceLocator()),
     )
+    ..registerFactory(
+      () => GetUserCommunitiesUsecase(communityRepository: serviceLocator()),
+    )
     ..registerLazySingleton(
-      () => CommunityBloc(createCommunityUsecase: serviceLocator()),
+      () => UserCommunitiesCubit(),
+    )
+    ..registerLazySingleton(
+      () => CommunityBloc(
+        createCommunityUsecase: serviceLocator(),
+        getUserCommunitiesUsecase: serviceLocator(),
+        userCommunitiesCubit: serviceLocator(),
+      ),
     );
 }
