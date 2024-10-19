@@ -7,3 +7,7 @@ class Failure {
 class AuthFailure extends Failure {
   AuthFailure([super.message]);
 }
+
+class CommunityFailure extends Failure {
+  CommunityFailure([super.message]);
+}

@@ -8,7 +8,6 @@ import 'package:reddit_clone/src/features/auth/data/models/user_model.dart';
 abstract interface class AuthRemoteDataSource {
   Future<UserModel> signInWithGoogle();
   Future<void> signOut();
-  CollectionReference get users;
   Stream<UserModel> getUserWithId(String uid);
   Stream<User?> authStateChanges();
 }
@@ -26,8 +25,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         _firebaseAuth = firebaseAuth,
         _googleSignIn = googleSignIn;
 
-  @override
-  CollectionReference get users => _firestore.collection("users");
+  CollectionReference get _users => _firestore.collection("users");
 
   @override
   Stream<User?> authStateChanges() {
@@ -41,7 +39,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Stream<UserModel> getUserWithId(String uid) {
     try {
-      return users.doc(uid).snapshots().map(
+      return _users.doc(uid).snapshots().map(
             (e) => UserModel.fromJson(e.data() as Map<String, dynamic>),
           );
     } catch (e) {
@@ -78,7 +76,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           awards: [],
           isAuthenticated: true,
         );
-        await users.doc(userModel.uid).set(userModel.toJson());
+        await _users.doc(userModel.uid).set(userModel.toJson());
       }
       return await getUserWithId(userCredential.user!.uid).first;
     } on FirebaseAuthException catch (e) {

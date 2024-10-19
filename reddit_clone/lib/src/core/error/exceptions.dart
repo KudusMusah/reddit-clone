@@ -7,3 +7,7 @@ class Exception {
 class AuthException extends Exception {
   AuthException(super.message);
 }
+
+class CommunityException extends Exception {
+  CommunityException(super.message);
+}

@@ -6,6 +6,7 @@ import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/routes/routes.dart';
 import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
 
@@ -23,6 +24,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => serviceLocator<AppUserCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<CommunityBloc>(),
         ),
       ],
       child: const MyApp(),

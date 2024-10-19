@@ -15,7 +15,15 @@ class AppTheme {
     drawerTheme: const DrawerThemeData(
       backgroundColor: AppColors.drawerColor,
     ),
-    primaryColor: AppColors.redColor,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        textStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 
   static var lightModeAppTheme = ThemeData.light().copyWith(

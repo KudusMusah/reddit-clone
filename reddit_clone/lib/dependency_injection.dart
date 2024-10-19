@@ -11,11 +11,20 @@ import 'package:reddit_clone/src/features/auth/domain/usecases/get_user_with_id_
 import 'package:reddit_clone/src/features/auth/domain/usecases/sign_in_with_goole_usecase.dart';
 import 'package:reddit_clone/src/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:reddit_clone/src/features/communities/data/datasources/community_remote_datasource.dart';
+import 'package:reddit_clone/src/features/communities/data/repository/community_repository_impl.dart';
+import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/create_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initAuth();
+  _initCommunity();
+  serviceLocator.registerLazySingleton(
+    () => FirebaseFirestore.instance,
+  );
 }
 
 void _initAuth() {
@@ -25,10 +34,6 @@ void _initAuth() {
 
   serviceLocator.registerFactory(
     () => FirebaseAuth.instance,
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => FirebaseFirestore.instance,
   );
 
   serviceLocator.registerFactory<AuthRemoteDataSource>(
@@ -74,4 +79,21 @@ void _initAuth() {
       getUserWithIdUsecase: serviceLocator(),
     ),
   );
+}
+
+void _initCommunity() {
+  serviceLocator
+    ..registerFactory<CommunityRemoteDatasource>(
+      () => CommunityRemoteDatasourceImpl(firebaseFirestore: serviceLocator()),
+    )
+    ..registerFactory<CommunityRepository>(
+      () =>
+          CommunityRepositoryImpl(communityRemoteDatasource: serviceLocator()),
+    )
+    ..registerFactory(
+      () => CreateCommunityUsecase(communityRepository: serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => CommunityBloc(createCommunityUsecase: serviceLocator()),
+    );
 }
