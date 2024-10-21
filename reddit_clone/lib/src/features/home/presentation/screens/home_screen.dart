@@ -4,8 +4,22 @@ import 'package:reddit_clone/src/core/common/drawers/community_list_drawer.dart'
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final uid = (context.read<AppUserCubit>().state as UserLoggedIn).user.uid;
+      context.read<CommunityBloc>().add(GetUserCommunities(uid));
+    });
+    super.initState();
+  }
 
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
@@ -14,7 +28,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = (context.read<AppUserCubit>().state as UserLoggedIn).user;
-    context.read<CommunityBloc>().add(GetUserCommunities(user.uid));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),

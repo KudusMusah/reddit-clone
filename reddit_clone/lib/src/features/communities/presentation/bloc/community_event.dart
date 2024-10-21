@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'community_bloc.dart';
 
 @immutable
@@ -11,7 +10,33 @@ class CreateCommunity extends CommunityEvent {
   CreateCommunity({required this.name, required this.creatorUid});
 }
 
+class EditCommunityEvent extends CommunityEvent {
+  final CommunityEntity community;
+  final File? profileImage;
+  final File? bannerImage;
+  EditCommunityEvent({
+    required this.community,
+    required this.profileImage,
+    required this.bannerImage,
+  });
+}
+
 class GetUserCommunities extends CommunityEvent {
   final String uid;
   GetUserCommunities(this.uid);
+}
+
+class GetCommunity extends CommunityEvent {
+  final String name;
+  GetCommunity(this.name);
+}
+
+class GetCommunityDone extends CommunityEvent {
+  final CommunityEntity community;
+  GetCommunityDone(this.community);
+}
+
+class GetCommunityFailed extends CommunityEvent {
+  final String message;
+  GetCommunityFailed(this.message);
 }

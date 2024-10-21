@@ -20,7 +20,6 @@ class CommunityListDrawer extends StatelessWidget {
                 Routemaster.of(context).push("create-community");
               },
             ),
-            const SizedBox(height: 20),
             BlocBuilder<UserCommunitiesCubit, UserCommunitiesState>(
               builder: (context, state) {
                 if (state is UserCommunitiesLoading) {
@@ -31,16 +30,21 @@ class CommunityListDrawer extends StatelessWidget {
                 }
                 final communities =
                     (state as UserCommunitiesSucess).communities;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: communities
-                      .map(
-                        (community) => Padding(
-                          padding: const EdgeInsets.fromLTRB(25, 6, 0, 6),
-                          child: Text(community.name),
-                        ),
-                      )
-                      .toList(),
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: communities.length,
+                    itemBuilder: (context, index) => ListTile(
+                      onTap: () {
+                        Routemaster.of(context)
+                            .push('/community/${communities[index].name}');
+                      },
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(communities[index].profileImage),
+                      ),
+                      title: Text("r/${communities[index].name}"),
+                    ),
+                  ),
                 );
               },
             ),

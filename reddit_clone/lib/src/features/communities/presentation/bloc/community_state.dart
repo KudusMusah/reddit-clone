@@ -9,9 +9,13 @@ final class CommunityLoading extends CommunityState {}
 
 final class CommunitySuccess extends CommunityState {}
 
+final class GetCommunitySuccess extends CommunityState {
+  final CommunityEntity community;
+  GetCommunitySuccess({required this.community});
+}
+
 final class CommunityFailureState extends CommunityState {
   final String message;
-
   CommunityFailureState(this.message);
 }
 

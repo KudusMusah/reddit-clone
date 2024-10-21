@@ -33,4 +33,22 @@ class CommunityModel extends CommunityEntity {
       ),
     );
   }
+
+  CommunityModel copyWith({
+    String? id,
+    String? name,
+    String? banner,
+    String? profileImage,
+    List<String>? members,
+    List<String>? mods,
+  }) {
+    return CommunityModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      banner: banner ?? this.banner,
+      profileImage: profileImage ?? this.profileImage,
+      members: members ?? this.members,
+      mods: mods ?? this.mods,
+    );
+  }
 }
