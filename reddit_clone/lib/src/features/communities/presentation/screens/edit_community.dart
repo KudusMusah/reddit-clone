@@ -9,7 +9,8 @@ import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/core/utils/file_picker.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
-import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/get_community/community_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
 class EditCommunity extends StatefulWidget {
@@ -47,8 +48,8 @@ class _EditCommunityState extends State<EditCommunity> {
       Routemaster.of(context).pop();
       return;
     }
-    context.read<CommunityBloc>().add(
-          EditCommunityEvent(
+    context.read<CreateCommunityBloc>().add(
+          UpdateCommunityEvent(
             community: community,
             profileImage: _selectedProfile,
             bannerImage: _selectedBanner,
@@ -60,36 +61,34 @@ class _EditCommunityState extends State<EditCommunity> {
   Widget build(BuildContext context) {
     final community =
         (context.read<CommunityBloc>().state as GetCommunitySuccess).community;
-    return BlocConsumer<CommunityBloc, CommunityState>(
-      listener: (context, state) {
-        if (state is CommunitySuccess) {
-          Routemaster.of(context).pop();
-        }
-        if (state is CommunityFailureState) {
-          showSnackBar(context, state.message);
-        }
-      },
-      builder: (context, state) {
-        if (state is CommunityLoading) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        return Scaffold(
-          backgroundColor: AppColors.blackColor,
-          appBar: AppBar(
-            title: const Text('Edit Community'),
-            centerTitle: false,
-            actions: [
-              TextButton(
-                onPressed: () => updateCommunity(context, community),
-                child: const Text('Save'),
-              ),
-            ],
+    return Scaffold(
+      backgroundColor: AppColors.blackColor,
+      appBar: AppBar(
+        title: const Text('Edit Community'),
+        centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () => updateCommunity(context, community),
+            child: const Text('Save'),
           ),
-          body: Padding(
+        ],
+      ),
+      body: BlocConsumer<CreateCommunityBloc, CreateCommunityState>(
+        listener: (context, state) {
+          if (state is CreateCommunitySuccess) {
+            Routemaster.of(context).pop();
+          }
+          if (state is CreateCommunityFailure) {
+            showSnackBar(context, state.message);
+          }
+        },
+        builder: (context, state) {
+          if (state is CreateCommunityLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
@@ -156,9 +155,9 @@ class _EditCommunityState extends State<EditCommunity> {
                 ),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

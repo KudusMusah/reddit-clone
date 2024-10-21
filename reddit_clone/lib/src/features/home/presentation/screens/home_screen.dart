@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/drawers/community_list_drawer.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
-import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/get_community/community_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

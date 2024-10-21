@@ -1,0 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
+import 'package:reddit_clone/src/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:reddit_clone/src/features/auth/data/repository/auth_repository_impl.dart';
+import 'package:reddit_clone/src/features/auth/domain/repository/auth_repository.dart';
+import 'package:reddit_clone/src/features/auth/domain/usecases/auth_state_changes_usecases.dart';
+import 'package:reddit_clone/src/features/auth/domain/usecases/get_user_with_id_usecase.dart';
+import 'package:reddit_clone/src/features/auth/domain/usecases/sign_in_with_goole_usecase.dart';
+import 'package:reddit_clone/src/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:reddit_clone/src/features/communities/data/datasources/community_remote_datasource.dart';
+import 'package:reddit_clone/src/features/communities/data/repository/community_repository_impl.dart';
+import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/create_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/get_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/get_user_communities_usecase.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/update_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/get_community/community_bloc.dart';
+
+part 'dependency_injection.dart';

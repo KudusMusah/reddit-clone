@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
-import 'package:reddit_clone/src/features/communities/presentation/bloc/community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CreateCommunityScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   final communityNameController = TextEditingController();
 
   void _createCommunity(user) {
-    context.read<CommunityBloc>().add(CreateCommunity(
+    context.read<CreateCommunityBloc>().add(CreateCommunity(
         name: communityNameController.text.trim(), creatorUid: user.uid));
   }
 
@@ -33,17 +33,17 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
       appBar: AppBar(
         title: const Text('Create a community'),
       ),
-      body: BlocConsumer<CommunityBloc, CommunityState>(
+      body: BlocConsumer<CreateCommunityBloc, CreateCommunityState>(
         listener: (context, state) {
-          if (state is CommunityFailureState) {
+          if (state is CreateCommunityFailure) {
             showSnackBar(context, state.message);
           }
-          if (state is CommunitySuccess) {
+          if (state is CreateCommunitySuccess) {
             Routemaster.of(context).pop();
           }
         },
         builder: (context, state) {
-          if (state is CommunityLoading) {
+          if (state is CreateCommunityLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );

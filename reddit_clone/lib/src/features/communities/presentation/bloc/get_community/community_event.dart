@@ -3,24 +3,6 @@ part of 'community_bloc.dart';
 @immutable
 sealed class CommunityEvent {}
 
-class CreateCommunity extends CommunityEvent {
-  final String name;
-  final String creatorUid;
-
-  CreateCommunity({required this.name, required this.creatorUid});
-}
-
-class EditCommunityEvent extends CommunityEvent {
-  final CommunityEntity community;
-  final File? profileImage;
-  final File? bannerImage;
-  EditCommunityEvent({
-    required this.community,
-    required this.profileImage,
-    required this.bannerImage,
-  });
-}
-
 class GetUserCommunities extends CommunityEvent {
   final String uid;
   GetUserCommunities(this.uid);
