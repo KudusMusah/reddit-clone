@@ -13,3 +13,9 @@ final class CreateCommunityFailure extends CreateCommunityState {
   final String message;
   CreateCommunityFailure(this.message);
 }
+
+final class GetQueryCommunitySuccess extends CreateCommunityState {
+  final List<CommunityEntity> communities;
+
+  GetQueryCommunitySuccess({required this.communities});
+}

@@ -3,14 +3,14 @@ part of 'create_community_bloc.dart';
 @immutable
 sealed class CreateCommunityEvent {}
 
-class CreateCommunity extends CreateCommunityEvent {
+final class CreateCommunity extends CreateCommunityEvent {
   final String name;
   final String creatorUid;
 
   CreateCommunity({required this.name, required this.creatorUid});
 }
 
-class UpdateCommunityEvent extends CreateCommunityEvent {
+final class UpdateCommunityEvent extends CreateCommunityEvent {
   final CommunityEntity community;
   final File? profileImage;
   final File? bannerImage;
@@ -20,3 +20,17 @@ class UpdateCommunityEvent extends CreateCommunityEvent {
     required this.bannerImage,
   });
 }
+
+final class GetQueryCommunities extends CreateCommunityEvent {
+  final String query;
+
+  GetQueryCommunities({required this.query});
+}
+
+final class QueryCommunitiesFetched extends CreateCommunityEvent {
+  final List<CommunityEntity> communities;
+
+  QueryCommunitiesFetched({required this.communities});
+}
+
+final class QueryCommunitiesFailed extends CreateCommunityEvent {}

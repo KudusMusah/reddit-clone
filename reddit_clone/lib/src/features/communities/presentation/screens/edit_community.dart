@@ -10,7 +10,7 @@ import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/core/utils/file_picker.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
-import 'package:reddit_clone/src/features/communities/presentation/bloc/get_community/community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
 class EditCommunity extends StatefulWidget {

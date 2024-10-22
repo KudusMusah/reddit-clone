@@ -11,6 +11,7 @@ abstract interface class CommunityRemoteDatasource {
   Stream<CommunityModel> getCommunity(String name);
   Future<String> uploadImage(String path, String id, File image);
   Future<void> updateCommunity(CommunityModel community);
+  Stream<List<CommunityModel>> getQueryCommunities(String query);
 }
 
 class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
@@ -88,5 +89,31 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     } catch (e) {
       throw CommunityException(e.toString());
     }
+  }
+
+  @override
+  Stream<List<CommunityModel>> getQueryCommunities(String query) {
+    return _community
+        .where(
+          "name",
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) + 1,
+                  ),
+        )
+        .snapshots()
+        .map(
+      (stream) {
+        List<CommunityModel> communities = [];
+        for (var community in stream.docs) {
+          communities.add(CommunityModel.fromJson(
+              community.data() as Map<String, dynamic>));
+        }
+        return communities;
+      },
+    );
   }
 }

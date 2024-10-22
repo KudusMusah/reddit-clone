@@ -10,4 +10,6 @@ abstract interface class CommunityRepository {
   Either<Failure, Stream<CommunityEntity>> getCommunity(String name);
   Future<Either<Failure, void>> editCommunity(
       CommunityEntity community, File? profileImage, File? bannerImage);
+  Either<Failure, Stream<List<CommunityEntity>>> getQueryCommunities(
+      String query);
 }

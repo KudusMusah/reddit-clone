@@ -72,4 +72,11 @@ class CommunityRepositoryImpl implements CommunityRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Either<Failure, Stream<List<CommunityEntity>>> getQueryCommunities(
+    String query,
+  ) {
+    return right(communityRemoteDatasource.getQueryCommunities(query));
+  }
 }

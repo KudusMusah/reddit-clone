@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit_clone/src/core/common/delegates/custom_search_delegates.dart';
 import 'package:reddit_clone/src/core/common/drawers/community_list_drawer.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
-import 'package:reddit_clone/src/features/communities/presentation/bloc/get_community/community_bloc.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearchDelegates());
+            },
             icon: const Icon(Icons.search),
           ),
           IconButton(

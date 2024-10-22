@@ -91,6 +91,9 @@ void _initCommunity() {
     ..registerFactory(
       () => UpdateCommunityUsecase(communityRepository: serviceLocator()),
     )
+    ..registerFactory(
+      () => GetQueryCommunitiesUsecase(communityRepository: serviceLocator()),
+    )
     ..registerLazySingleton(
       () => UserCommunitiesCubit(),
     )
@@ -105,6 +108,7 @@ void _initCommunity() {
       () => CreateCommunityBloc(
         createCommunityUsecase: serviceLocator(),
         updateCommunityUsecase: serviceLocator(),
+        getQueryCommunitiesUsecase: serviceLocator(),
       ),
     );
 }
