@@ -4,7 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/constants/constants.dart';
-import 'package:reddit_clone/src/core/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/core/utils/file_picker.dart';

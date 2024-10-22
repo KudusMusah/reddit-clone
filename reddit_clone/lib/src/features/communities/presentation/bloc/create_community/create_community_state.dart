@@ -19,3 +19,9 @@ final class GetQueryCommunitySuccess extends CreateCommunityState {
 
   GetQueryCommunitySuccess({required this.communities});
 }
+
+final class GetCommunityMembersSuccess extends CreateCommunityState {
+  final List<UserEntity> members;
+
+  GetCommunityMembersSuccess({required this.members});
+}

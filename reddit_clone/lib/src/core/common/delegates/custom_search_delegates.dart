@@ -51,7 +51,7 @@ class CustomSearchDelegates extends SearchDelegate {
               final community = state.communities[idx];
               return ListTile(
                 onTap: () {
-                  Routemaster.of(context).push('/community/${community.name}');
+                  Routemaster.of(context).push('/r/${community.name}');
                 },
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(community.profileImage),

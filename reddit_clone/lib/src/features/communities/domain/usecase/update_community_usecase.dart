@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
-import 'package:reddit_clone/src/core/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/usecase/usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';

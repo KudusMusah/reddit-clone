@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit_clone/src/core/error/error_pages/user_error_page.dart';
 import 'package:reddit_clone/src/features/auth/presentation/screens/landing_page.dart';
+import 'package:reddit_clone/src/features/communities/presentation/screens/add_mods_screen.dart';
 import 'package:reddit_clone/src/features/communities/presentation/screens/community_screen.dart';
 import 'package:reddit_clone/src/features/communities/presentation/screens/create_community.dart';
 import 'package:reddit_clone/src/features/communities/presentation/screens/edit_community.dart';
@@ -19,18 +20,23 @@ final loggedInRoutes = RouteMap(
     "/": (_) => const MaterialPage(child: HomeScreen()),
     "/create-community": (_) =>
         const MaterialPage(child: CreateCommunityScreen()),
-    "/community/:name": (route) => MaterialPage(
+    "/r/:name": (route) => MaterialPage(
           child: CommunityScreen(
             name: route.pathParameters["name"]!,
           ),
         ),
-    "/community/:name/mod-tools": (route) => MaterialPage(
+    "/r/:name/mod-tools": (route) => MaterialPage(
           child: ModToolsScreen(
             name: route.pathParameters['name']!,
           ),
         ),
-    "/community/:name/mod-tools/edit": (route) => MaterialPage(
+    "/r/:name/mod-tools/edit": (route) => MaterialPage(
           child: EditCommunity(
+            name: route.pathParameters['name']!,
+          ),
+        ),
+    "/r/:name/mod-tools/add-mods": (route) => MaterialPage(
+          child: AddModsScreen(
             name: route.pathParameters['name']!,
           ),
         ),

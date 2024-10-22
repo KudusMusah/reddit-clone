@@ -1,4 +1,4 @@
-import 'package:reddit_clone/src/core/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 
 class CommunityModel extends CommunityEntity {
   CommunityModel({

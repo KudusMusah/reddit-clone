@@ -1,4 +1,4 @@
-import 'package:reddit_clone/src/core/entities/user_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   UserModel({

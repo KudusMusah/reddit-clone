@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:reddit_clone/src/core/common/models/user_model.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/features/communities/data/models/community_model.dart';
 
@@ -12,6 +13,11 @@ abstract interface class CommunityRemoteDatasource {
   Future<String> uploadImage(String path, String id, File image);
   Future<void> updateCommunity(CommunityModel community);
   Stream<List<CommunityModel>> getQueryCommunities(String query);
+  Future<void> joinCommunity(String communityName, String userId);
+  Future<void> leaveCommunity(String communityName, String userId);
+  Future<List<UserModel>> getCommunityMembers(String communityName);
+  Future<UserModel> getUserWithId(String uid);
+  Future<void> updateMods(String communityName, List<String> mods);
 }
 
 class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
@@ -26,6 +32,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
 
   CollectionReference get _community =>
       _firebaseFirestore.collection("communities");
+  CollectionReference get _users => _firebaseFirestore.collection("users");
 
   @override
   Future<void> createCommunity(CommunityModel community) async {
@@ -115,5 +122,77 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
         return communities;
       },
     );
+  }
+
+  @override
+  Future<void> joinCommunity(String communityName, String userId) async {
+    try {
+      await _community.doc(communityName).update({
+        "members": FieldValue.arrayUnion([userId]),
+      });
+    } on FirebaseException catch (e) {
+      throw CommunityException(e.message ?? e.toString());
+    } catch (e) {
+      throw CommunityException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> leaveCommunity(String communityName, String userId) async {
+    try {
+      await _community.doc(communityName).update({
+        "members": FieldValue.arrayRemove([userId]),
+      });
+    } on FirebaseException catch (e) {
+      throw CommunityException(e.message ?? e.toString());
+    } catch (e) {
+      throw CommunityException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<UserModel>> getCommunityMembers(String communityName) async {
+    try {
+      List<UserModel> membersData = [];
+      final community = await _community.doc(communityName).snapshots().first;
+      final membersId =
+          CommunityModel.fromJson(community.data() as Map<String, dynamic>)
+              .members;
+
+      for (var member in membersId) {
+        membersData.add(await getUserWithId(member));
+      }
+      return membersData;
+    } on FirebaseException catch (e) {
+      throw Exception(e.message ?? e.toString());
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> getUserWithId(String uid) async {
+    try {
+      final user = await _users.doc(uid).snapshots().first;
+      return UserModel.fromJson(user.data() as Map<String, dynamic>);
+    } on FirebaseException catch (e) {
+      throw CommunityException(e.message ?? e.toString());
+    } catch (e) {
+      throw CommunityException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateMods(String communityName, List<String> mods) async {
+    try {
+      await _community.doc(communityName).update({
+        "mods": mods,
+      });
+      
+    } on FirebaseException catch (e) {
+      throw CommunityException(e.message ?? e.toString());
+    } catch (e) {
+      throw CommunityException(e.toString());
+    }
   }
 }

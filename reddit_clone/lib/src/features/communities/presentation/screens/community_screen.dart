@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -23,12 +25,25 @@ class _CommunityScreenState extends State<CommunityScreen> {
   }
 
   void _navigateToModTools(BuildContext context) {
-    Routemaster.of(context).push("/community/${widget.name}/mod-tools");
+    Routemaster.of(context).push("/r/${widget.name}/mod-tools");
+  }
+
+  void _joinOrLeaveCommunity(
+      CommunityEntity community, String userId, BuildContext context) {
+    if (community.members.contains(userId)) {
+      context
+          .read<CreateCommunityBloc>()
+          .add(LeaveCommunity(communityName: community.name, userId: userId));
+    } else {
+      context
+          .read<CreateCommunityBloc>()
+          .add(JoinCommunity(communityName: community.name, userId: userId));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = (context.read<AppUserCubit>().state as UserLoggedIn).user;
+    final user = (context.watch<AppUserCubit>().state as UserLoggedIn).user;
     return Scaffold(
       body: BlocBuilder<CommunityBloc, CommunityState>(
         builder: (context, state) {
@@ -101,7 +116,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                     child: const Text('Mod Tools'),
                                   )
                                 : OutlinedButton(
-                                    onPressed: () {},
+                                    onPressed: () => _joinOrLeaveCommunity(
+                                        community, user.uid, context),
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),

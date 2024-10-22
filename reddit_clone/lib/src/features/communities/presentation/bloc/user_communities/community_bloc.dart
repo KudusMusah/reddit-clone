@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
-import 'package:reddit_clone/src/core/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/get_community_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/get_user_communities_usecase.dart';
 
@@ -12,6 +12,7 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
   final GetUserCommunitiesUsecase _getUserCommunitiesUsecase;
   final UserCommunitiesCubit _userCommunitiesCubit;
   final GetCommunityUsecase _getCommunityUsecase;
+
   CommunityBloc({
     required GetUserCommunitiesUsecase getUserCommunitiesUsecase,
     required UserCommunitiesCubit userCommunitiesCubit,

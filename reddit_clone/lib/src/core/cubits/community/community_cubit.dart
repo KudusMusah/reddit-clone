@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit_clone/src/core/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 
 part 'community_state.dart';
 

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/src/core/constants/constants.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
-import 'package:reddit_clone/src/features/auth/data/models/user_model.dart';
+import 'package:reddit_clone/src/core/common/models/user_model.dart';
 
 abstract interface class AuthRemoteDataSource {
   Future<UserModel> signInWithGoogle();

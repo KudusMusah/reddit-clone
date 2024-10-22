@@ -6,11 +6,11 @@ class ModToolsScreen extends StatelessWidget {
   final String name;
 
   void navigateToEditCommunity(BuildContext context) {
-    Routemaster.of(context).push("/community/$name/mod-tools/edit");
+    Routemaster.of(context).push("/r/$name/mod-tools/edit");
   }
 
   void navigateToAddMods(BuildContext context) {
-    Routemaster.of(context).push('/add-mods/$name');
+    Routemaster.of(context).push('/r/$name/mod-tools/add-mods');
   }
 
   @override

@@ -36,7 +36,7 @@ class CommunityListDrawer extends StatelessWidget {
                     itemBuilder: (context, index) => ListTile(
                       onTap: () {
                         Routemaster.of(context)
-                            .push('/community/${communities[index].name}');
+                            .push('/r/${communities[index].name}');
                       },
                       leading: CircleAvatar(
                         backgroundImage:

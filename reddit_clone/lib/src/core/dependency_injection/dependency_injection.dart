@@ -5,57 +5,55 @@ final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
   _initAuth();
   _initCommunity();
-  serviceLocator.registerLazySingleton(
-    () => FirebaseFirestore.instance,
-  );
-  serviceLocator.registerLazySingleton(
-    () => FirebaseStorage.instance,
-  );
+  serviceLocator
+    ..registerLazySingleton(
+      () => FirebaseFirestore.instance,
+    )
+    ..registerLazySingleton(
+      () => FirebaseStorage.instance,
+    )
+    ..registerFactory(
+      () => GoogleSignIn(),
+    )
+    ..registerFactory(
+      () => FirebaseAuth.instance,
+    );
 }
 
 void _initAuth() {
-  serviceLocator.registerFactory(
-    () => GoogleSignIn(),
-  );
-
-  serviceLocator.registerFactory(
-    () => FirebaseAuth.instance,
-  );
-
-  serviceLocator.registerFactory<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(
-      firestore: serviceLocator(),
-      firebaseAuth: serviceLocator(),
-      googleSignIn: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory<AuthRepository>(
-    () => AuthRepositoryImpl(
-      authRemoteDataSource: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
-    () => SignInWithGooleUsecase(authRepository: serviceLocator()),
-  );
-
+  serviceLocator
+    // Datasources
+    ..registerFactory<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(
+        firestore: serviceLocator(),
+        firebaseAuth: serviceLocator(),
+        googleSignIn: serviceLocator(),
+      ),
+    )
+    // Repository
+    ..registerFactory<AuthRepository>(
+      () => AuthRepositoryImpl(
+        authRemoteDataSource: serviceLocator(),
+      ),
+    )
+    // Usecases
+    ..registerFactory(
+      () => SignInWithGooleUsecase(authRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => AuthStateChangesUsecases(authRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => GetUserWithIdUsecase(authRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => SignOutUsecase(authRepository: serviceLocator()),
+    );
+  // Cubits
   serviceLocator.registerLazySingleton(
     () => AppUserCubit(),
   );
-
-  serviceLocator.registerFactory(
-    () => AuthStateChangesUsecases(authRepository: serviceLocator()),
-  );
-
-  serviceLocator.registerFactory(
-    () => GetUserWithIdUsecase(authRepository: serviceLocator()),
-  );
-
-  serviceLocator.registerFactory(
-    () => SignOutUsecase(authRepository: serviceLocator()),
-  );
-
+  // Blocs
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       signInWithGooleUsecase: serviceLocator(),
@@ -69,16 +67,20 @@ void _initAuth() {
 
 void _initCommunity() {
   serviceLocator
+    // Datasources
     ..registerFactory<CommunityRemoteDatasource>(
       () => CommunityRemoteDatasourceImpl(
         firebaseFirestore: serviceLocator(),
         firebaseStorage: serviceLocator(),
       ),
     )
+    // Repository
     ..registerFactory<CommunityRepository>(
       () =>
           CommunityRepositoryImpl(communityRemoteDatasource: serviceLocator()),
     )
+
+    // Usecases
     ..registerFactory(
       () => CreateCommunityUsecase(communityRepository: serviceLocator()),
     )
@@ -94,9 +96,24 @@ void _initCommunity() {
     ..registerFactory(
       () => GetQueryCommunitiesUsecase(communityRepository: serviceLocator()),
     )
+    ..registerFactory(
+      () => JoinCommunityUsecase(communityRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => LeaveCommunityUsease(communityRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => GetCommunityMembersUsecase(communityRepository: serviceLocator()),
+    )
+    ..registerFactory(
+      () => UpdateModsUsecase(communityRepository: serviceLocator()),
+    )
+
+    // Cubits
     ..registerLazySingleton(
       () => UserCommunitiesCubit(),
     )
+    // Blocs
     ..registerLazySingleton(
       () => CommunityBloc(
         getUserCommunitiesUsecase: serviceLocator(),
@@ -109,6 +126,10 @@ void _initCommunity() {
         createCommunityUsecase: serviceLocator(),
         updateCommunityUsecase: serviceLocator(),
         getQueryCommunitiesUsecase: serviceLocator(),
+        joinCommunityUsecase: serviceLocator(),
+        leaveCommunityUsease: serviceLocator(),
+        getCommunityMembersUsecase: serviceLocator(),
+        updateModsUsecase: serviceLocator(),
       ),
     );
 }
