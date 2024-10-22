@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CustomSearchDelegates extends SearchDelegate {
   @override
@@ -49,7 +50,9 @@ class CustomSearchDelegates extends SearchDelegate {
             itemBuilder: (context, idx) {
               final community = state.communities[idx];
               return ListTile(
-                onTap: () {},
+                onTap: () {
+                  Routemaster.of(context).push('/community/${community.name}');
+                },
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(community.profileImage),
                 ),

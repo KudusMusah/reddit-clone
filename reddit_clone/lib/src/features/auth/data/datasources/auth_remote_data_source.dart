@@ -82,6 +82,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> signOut() async {
     try {
+      await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.message ?? "An unexpected error occured");

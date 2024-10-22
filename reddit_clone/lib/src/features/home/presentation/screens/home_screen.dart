@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/delegates/custom_search_delegates.dart';
 import 'package:reddit_clone/src/core/common/drawers/community_list_drawer.dart';
+import 'package:reddit_clone/src/core/common/drawers/profile_drawer.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 
@@ -24,6 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
+  }
+
+  void displayEndDrawer(BuildContext context) {
+    Scaffold.of(context).openEndDrawer();
   }
 
   @override
@@ -50,16 +55,19 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {},
             icon: const Icon(Icons.add),
           ),
-          IconButton(
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage(user.profilePic),
-              radius: 18,
-            ),
-            onPressed: () {},
-          ),
+          Builder(builder: (context) {
+            return IconButton(
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage(user.profilePic),
+                radius: 18,
+              ),
+              onPressed: () => displayEndDrawer(context),
+            );
+          }),
         ],
       ),
       drawer: const CommunityListDrawer(),
+      endDrawer: const ProfileDrawer(),
     );
   }
 }
