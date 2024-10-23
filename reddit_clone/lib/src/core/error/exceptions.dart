@@ -11,3 +11,7 @@ class AuthException extends Exception {
 class CommunityException extends Exception {
   CommunityException(super.message);
 }
+
+class ProfileException extends Exception {
+  ProfileException(super.message);
+}

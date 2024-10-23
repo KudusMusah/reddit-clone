@@ -7,6 +7,8 @@ import 'package:reddit_clone/src/features/communities/presentation/screens/creat
 import 'package:reddit_clone/src/features/communities/presentation/screens/edit_community.dart';
 import 'package:reddit_clone/src/features/communities/presentation/screens/mod_tools_screen.dart';
 import 'package:reddit_clone/src/features/home/presentation/screens/home_screen.dart';
+import 'package:reddit_clone/src/features/user_profiles/presentation/screens/user_profile_edit_screen.dart';
+import 'package:reddit_clone/src/features/user_profiles/presentation/screens/user_profile_screen.dart';
 import 'package:routemaster/routemaster.dart';
 
 final loggedOutRoutes = RouteMap(
@@ -22,6 +24,16 @@ final loggedInRoutes = RouteMap(
         const MaterialPage(child: CreateCommunityScreen()),
     "/r/:name": (route) => MaterialPage(
           child: CommunityScreen(
+            name: route.pathParameters["name"]!,
+          ),
+        ),
+    "/u/:name": (route) => MaterialPage(
+          child: UserProfileScreen(
+            name: route.pathParameters["name"]!,
+          ),
+        ),
+    "/u/:name/edit": (route) => MaterialPage(
+          child: UserProfileEditScreen(
             name: route.pathParameters["name"]!,
           ),
         ),

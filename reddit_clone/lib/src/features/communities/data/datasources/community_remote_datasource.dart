@@ -188,7 +188,6 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
       await _community.doc(communityName).update({
         "mods": mods,
       });
-      
     } on FirebaseException catch (e) {
       throw CommunityException(e.message ?? e.toString());
     } catch (e) {

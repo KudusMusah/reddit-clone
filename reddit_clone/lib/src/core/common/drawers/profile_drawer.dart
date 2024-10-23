@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -31,7 +32,9 @@ class ProfileDrawer extends StatelessWidget {
             ListTile(
               title: const Text('My Profile'),
               leading: const Icon(Icons.person),
-              onTap: () {},
+              onTap: () {
+                Routemaster.of(context).push("u/${user.name}");
+              },
             ),
             ListTile(
               title: const Text('Log Out'),

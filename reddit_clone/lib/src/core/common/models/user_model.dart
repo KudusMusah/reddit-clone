@@ -16,7 +16,7 @@ class UserModel extends UserEntity {
       'uid': uid,
       'name': name,
       'profilePic': profilePic,
-      'banner': banner, 
+      'banner': banner,
       'karma': karma,
       'awards': awards,
       'isAuthenticated': isAuthenticated,
@@ -34,6 +34,26 @@ class UserModel extends UserEntity {
         (map['awards'] as List<dynamic>),
       ),
       isAuthenticated: map['isAuthenticated'] as bool,
+    );
+  }
+
+  UserModel copyWith({
+    String? uid,
+    String? name,
+    String? profilePic,
+    String? banner,
+    int? karma,
+    List<String>? awards,
+    bool? isAuthenticated,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      profilePic: profilePic ?? this.profilePic,
+      banner: banner ?? this.banner,
+      karma: karma ?? this.karma,
+      awards: awards ?? this.awards,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
     );
   }
 }

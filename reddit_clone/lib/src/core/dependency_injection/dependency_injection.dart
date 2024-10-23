@@ -5,6 +5,7 @@ final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
   _initAuth();
   _initCommunity();
+  _initProfile();
   serviceLocator
     ..registerLazySingleton(
       () => FirebaseFirestore.instance,
@@ -130,6 +131,33 @@ void _initCommunity() {
         leaveCommunityUsease: serviceLocator(),
         getCommunityMembersUsecase: serviceLocator(),
         updateModsUsecase: serviceLocator(),
+      ),
+    );
+}
+
+void _initProfile() {
+  serviceLocator
+    // Datasources
+    ..registerFactory<ProfileRemoteDataSource>(
+      () => ProfileRemoteDataSourceImpl(
+        firestore: serviceLocator(),
+        storage: serviceLocator(),
+      ),
+    )
+    // Repository
+    ..registerFactory<ProfileRepository>(
+      () => ProfileRepositoryImpl(
+        profileRemoteDataSource: serviceLocator(),
+      ),
+    ) // Usecases
+    ..registerFactory(
+      () => EditProfileUsecase(
+        profileRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => ProfileBloc(
+        editProfileUsecase: serviceLocator(),
       ),
     );
 }
