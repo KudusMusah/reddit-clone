@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:reddit_clone/src/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:reddit_clone/src/features/auth/domain/repository/auth_repository.dart';
@@ -32,5 +33,6 @@ import 'package:reddit_clone/src/features/user_profiles/data/repository/profile_
 import 'package:reddit_clone/src/features/user_profiles/domain/repository/profile_repository.dart';
 import 'package:reddit_clone/src/features/user_profiles/domain/usecases/edit_profile_usecase.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'dependency_injection.dart';

@@ -73,10 +73,11 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                     _createCommunity(user);
                   },
                   style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      )),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                   child: const Text(
                     'Create community',
                     style: TextStyle(

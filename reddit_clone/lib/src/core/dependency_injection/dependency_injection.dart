@@ -3,6 +3,8 @@ part of 'dependency_injection_imports.dart';
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   _initAuth();
   _initCommunity();
   _initProfile();
@@ -13,11 +15,19 @@ Future<void> initDependencies() async {
     ..registerLazySingleton(
       () => FirebaseStorage.instance,
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () => GoogleSignIn(),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () => FirebaseAuth.instance,
+    )
+    ..registerLazySingleton(
+      () => sharedPreferences,
+    )
+    ..registerLazySingleton(
+      () => ThemeCubit(
+        sharedPreferences: serviceLocator(),
+      ),
     );
 }
 

@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/core/dependency_injection/dependency_injection_imports.dart';
 import 'package:reddit_clone/src/core/routes/routes.dart';
-import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
@@ -22,6 +22,9 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => serviceLocator<ThemeCubit>(),
+        ),
         BlocProvider(
           create: (context) => serviceLocator<AuthBloc>(),
         ),
@@ -62,7 +65,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Reddit Clone',
-          theme: AppTheme.darkModeAppTheme,
+          theme: context.watch<ThemeCubit>().getCurrentTheme(),
           routerDelegate: RoutemasterDelegate(
             routesBuilder: (context) {
               if (state is UserAuthenticated) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
+import 'package:reddit_clone/src/core/enums/theme_mode.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:routemaster/routemaster.dart';
@@ -46,9 +48,16 @@ class ProfileDrawer extends StatelessWidget {
                 context.read<AuthBloc>().add(SignOut());
               },
             ),
-            Switch.adaptive(
-              value: true,
-              onChanged: (val) {},
+            BlocBuilder<ThemeCubit, ThemeData>(
+              builder: (context, state) {
+                return Switch.adaptive(
+                  value: context.read<ThemeCubit>().currentTheme ==
+                      AppThemeMode.dark,
+                  onChanged: (val) {
+                    context.read<ThemeCubit>().toggleTheme();
+                  },
+                );
+              },
             ),
           ],
         ),
