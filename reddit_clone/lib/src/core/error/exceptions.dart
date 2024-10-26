@@ -15,3 +15,7 @@ class CommunityException extends Exception {
 class ProfileException extends Exception {
   ProfileException(super.message);
 }
+
+class PostException extends Exception {
+  PostException(super.message);
+}

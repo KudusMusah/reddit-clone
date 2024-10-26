@@ -15,3 +15,7 @@ class CommunityFailure extends Failure {
 class ProfileFailure extends Failure {
   ProfileFailure([super.message]);
 }
+
+class PostFailure extends Failure {
+  PostFailure([super.message]);
+}

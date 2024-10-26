@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/delegates/custom_search_delegates.dart';
 import 'package:reddit_clone/src/core/common/drawers/community_list_drawer.dart';
 import 'package:reddit_clone/src/core/common/drawers/profile_drawer.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
+import 'package:reddit_clone/src/features/feed/presentation/screens/feeds.dart';
+import 'package:reddit_clone/src/features/posts/presentation/screens/add_posts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _page = 0;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -21,6 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<CommunityBloc>().add(GetUserCommunities(uid));
     });
     super.initState();
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
   }
 
   void displayDrawer(BuildContext context) {
@@ -34,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = (context.read<AppUserCubit>().state as UserLoggedIn).user;
+    final currentTheme = context.watch<ThemeCubit>().state;
+    Widget bodyWidget = const FeedScreen();
+    if (_page == 1) {
+      bodyWidget = const PostScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -66,8 +82,31 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
         ],
       ),
+      body: bodyWidget,
       drawer: const CommunityListDrawer(),
       endDrawer: const ProfileDrawer(),
+      bottomNavigationBar: CupertinoTabBar(
+        activeColor: currentTheme.iconTheme.color,
+        backgroundColor: currentTheme.colorScheme.surface,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.home),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Icon(Icons.add),
+            ),
+            label: '',
+          ),
+        ],
+        onTap: onPageChanged,
+        currentIndex: _page,
+      ),
     );
   }
 }

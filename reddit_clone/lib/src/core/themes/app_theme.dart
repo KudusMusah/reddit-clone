@@ -15,6 +15,7 @@ class AppTheme {
     drawerTheme: const DrawerThemeData(
       backgroundColor: AppColors.drawerColor,
     ),
+    primaryColor: AppColors.redColor,
   );
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
