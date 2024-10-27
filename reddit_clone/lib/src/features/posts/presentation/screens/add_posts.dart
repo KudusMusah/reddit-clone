@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
+import 'package:reddit_clone/src/core/themes/app_theme.dart';
 import 'package:routemaster/routemaster.dart';
 
 class PostScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class PostScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: currentTheme.colorScheme.surface,
-                elevation: 16,
+                elevation: currentTheme == AppTheme.lightModeAppTheme ? 1 : 16,
                 child: Center(
                   child: Icon(
                     Icons.image_outlined,
@@ -51,7 +52,7 @@ class PostScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: currentTheme.colorScheme.surface,
-                elevation: 16,
+                elevation: currentTheme == AppTheme.lightModeAppTheme ? 1 : 16,
                 child: Center(
                   child: Icon(
                     Icons.font_download_outlined,
@@ -71,7 +72,7 @@ class PostScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: currentTheme.colorScheme.surface,
-                elevation: 16,
+                elevation: currentTheme == AppTheme.lightModeAppTheme ? 1 : 16,
                 child: Center(
                   child: Icon(
                     Icons.link_outlined,

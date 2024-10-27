@@ -8,7 +8,7 @@ import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/features/communities/data/datasources/community_remote_datasource.dart';
-import 'package:reddit_clone/src/features/communities/data/models/community_model.dart';
+import 'package:reddit_clone/src/core/common/models/community_model.dart';
 import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
 
 class CommunityRepositoryImpl implements CommunityRepository {

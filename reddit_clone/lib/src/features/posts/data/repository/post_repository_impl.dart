@@ -5,8 +5,10 @@ import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
+import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:reddit_clone/src/features/posts/data/models/post_model.dart';
+import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/domain/repository/post_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -106,7 +108,7 @@ class PostRepositoryImpl implements PostRepository {
         commentCount: 0,
         username: user.name,
         uid: user.uid,
-        type: "link",
+        type: "text",
         createdAt: DateTime.now(),
         awards: [],
       );
@@ -115,5 +117,16 @@ class PostRepositoryImpl implements PostRepository {
     } on PostException catch (e) {
       return left(PostFailure(e.message));
     }
+  }
+
+  @override
+  Future<Either<PostFailure, Stream<List<PostEntity>>>> fetchUserFeed(
+    List<CommunityEntity> communities,
+  ) async {
+    return right(
+      postRemoteDataSource.fetchUserFeed(
+        communities.map((comm) => CommunityMapper.entityToModel(comm)).toList(),
+      ),
+    );
   }
 }

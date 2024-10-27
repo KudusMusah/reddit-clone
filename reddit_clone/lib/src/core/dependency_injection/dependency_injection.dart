@@ -1,13 +1,14 @@
 part of 'dependency_injection_imports.dart';
 
 final serviceLocator = GetIt.instance;
-
 Future<void> initDependencies() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
   _initAuth();
   _initCommunity();
   _initProfile();
+  _initPosts();
+
   serviceLocator
     ..registerLazySingleton(
       () => FirebaseFirestore.instance,
@@ -23,6 +24,9 @@ Future<void> initDependencies() async {
     )
     ..registerLazySingleton(
       () => sharedPreferences,
+    )
+    ..registerLazySingleton(
+      () => const Uuid(),
     )
     ..registerLazySingleton(
       () => ThemeCubit(
@@ -168,6 +172,56 @@ void _initProfile() {
     ..registerLazySingleton(
       () => ProfileBloc(
         editProfileUsecase: serviceLocator(),
+      ),
+    );
+}
+
+void _initPosts() {
+  serviceLocator
+    // Datasources
+    ..registerFactory<PostRemoteDataSource>(
+      () => PostRemoteDataSourceImpl(
+        firestore: serviceLocator(),
+        firebaseStorage: serviceLocator(),
+      ),
+    )
+    // Repository
+    ..registerFactory<PostRepository>(
+      () => PostRepositoryImpl(
+        postRemoteDataSource: serviceLocator(),
+        uuid: serviceLocator(),
+      ),
+    ) // Usecases
+    ..registerFactory(
+      () => CreateImagePostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => CreateTextPostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => CreateLinkPostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => GetUserFeedUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => PostsBloc(
+        createImagePostUsecase: serviceLocator(),
+        createLinkPostUsecase: serviceLocator(),
+        createTextPostUsecase: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => UserFeedBloc(
+        getUserFeedUsecase: serviceLocator(),
       ),
     );
 }

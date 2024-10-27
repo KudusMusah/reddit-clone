@@ -85,15 +85,15 @@ class PostModel extends PostEntity {
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
       communityName: map['communityName'] as String,
       communityProfilePic: map['communityProfilePic'] as String,
-      upvotes: List<String>.from((map['upvotes'] as List<String>)),
-      downvotes: List<String>.from((map['downvotes'] as List<String>)),
+      upvotes: List<String>.from((map['upvotes'] as List<dynamic>)),
+      downvotes: List<String>.from((map['downvotes'] as List<dynamic>)),
       commentCount: map['commentCount'] as int,
       username: map['username'] as String,
       uid: map['uid'] as String,
       type: map['type'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       awards: List<String>.from(
-        (map['awards'] as List<String>),
+        (map['awards'] as List<dynamic>),
       ),
     );
   }

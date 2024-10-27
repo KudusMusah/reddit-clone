@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reddit_clone/src/core/common/models/user_model.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
-import 'package:reddit_clone/src/features/communities/data/models/community_model.dart';
+import 'package:reddit_clone/src/core/common/models/community_model.dart';
 
 abstract interface class CommunityRemoteDatasource {
   Future<void> createCommunity(CommunityModel community);
