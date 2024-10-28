@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
@@ -69,8 +70,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   flexibleSpace: Stack(
                     children: [
                       Positioned.fill(
-                        child: Image.network(
-                          community.banner,
+                        child: CachedNetworkImage(
+                          imageUrl: community.banner,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -85,7 +88,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(
+                            backgroundImage: CachedNetworkImageProvider(
                               community.profileImage,
                             ),
                             radius: 35,

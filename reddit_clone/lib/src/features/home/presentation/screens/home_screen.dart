@@ -9,7 +9,7 @@ import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 import 'package:reddit_clone/src/features/feed/presentation/screens/feeds.dart';
-import 'package:reddit_clone/src/features/posts/presentation/bloc/community_posts_bloc/user_feed_bloc.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/screens/add_posts.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
@@ -39,8 +40,9 @@ class CommunityListDrawer extends StatelessWidget {
                             .push('/r/${communities[index].name}');
                       },
                       leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(communities[index].profileImage),
+                        backgroundImage: CachedNetworkImageProvider(
+                          communities[index].profileImage,
+                        ),
                       ),
                       title: Text("r/${communities[index].name}"),
                     ),

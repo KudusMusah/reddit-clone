@@ -35,7 +35,7 @@ import 'package:reddit_clone/src/features/posts/domain/usecases/create_image_pos
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_link_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_text_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/get_user_feed_usecase.dart';
-import 'package:reddit_clone/src/features/posts/presentation/bloc/community_posts_bloc/user_feed_bloc.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 import 'package:reddit_clone/src/features/user_profiles/data/datasources/profile_remote_datasource.dart';
 import 'package:reddit_clone/src/features/user_profiles/data/repository/profile_repository_impl.dart';

@@ -1,4 +1,5 @@
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/constants/constants.dart';
@@ -48,7 +49,8 @@ class PostCard extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {},
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
                                         post.communityProfilePic,
                                       ),
                                       radius: 16,
@@ -121,9 +123,10 @@ class PostCard extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.35,
                               width: double.infinity,
-                              child: Image.network(
-                                post.imageUrl!,
-                                fit: BoxFit.cover,
+                              child: CachedNetworkImage(
+                                imageUrl: post.imageUrl!,
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
                             ),
                           if (isTypeLink)
@@ -151,6 +154,34 @@ class PostCard extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_upward,
+                                      size: 30,
+                                      color: post.upvotes.contains(user.uid)
+                                          ? AppColors.redColor
+                                          : null,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${post.upvotes.length - post.downvotes.length == 0 ? 'Vote' : post.upvotes.length - post.downvotes.length}',
+                                    style: const TextStyle(fontSize: 17),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_downward,
+                                      size: 30,
+                                      color: post.downvotes.contains(user.uid)
+                                          ? AppColors.blueColor
+                                          : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Row(
                                 children: [
                                   IconButton(

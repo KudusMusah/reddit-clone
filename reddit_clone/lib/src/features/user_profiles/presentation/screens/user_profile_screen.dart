@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
@@ -21,8 +22,10 @@ class UserProfileScreen extends StatelessWidget {
               flexibleSpace: Stack(
                 children: [
                   Positioned.fill(
-                    child: Image.network(
-                      user.banner,
+                    child: CachedNetworkImage(
+                      imageUrl: user.banner,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -30,7 +33,9 @@ class UserProfileScreen extends StatelessWidget {
                     alignment: Alignment.bottomLeft,
                     padding: const EdgeInsets.all(20).copyWith(bottom: 70),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(user.profilePic),
+                      backgroundImage: CachedNetworkImageProvider(
+                        user.profilePic,
+                      ),
                       radius: 45,
                     ),
                   ),

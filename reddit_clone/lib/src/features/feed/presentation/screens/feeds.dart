@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/features/feed/presentation/widgets/post_card.dart';
-import 'package:reddit_clone/src/features/posts/presentation/bloc/community_posts_bloc/user_feed_bloc.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
