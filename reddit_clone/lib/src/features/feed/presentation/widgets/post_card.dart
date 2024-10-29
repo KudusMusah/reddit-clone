@@ -213,7 +213,10 @@ class PostCard extends StatelessWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () => context
+                                        .read<PostsBloc>()
+                                        .add(UpvotePost(
+                                            userId: user.uid, post: post)),
                                     icon: Icon(
                                       Icons.arrow_upward,
                                       size: 30,
@@ -227,7 +230,10 @@ class PostCard extends StatelessWidget {
                                     style: const TextStyle(fontSize: 17),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () => context
+                                        .read<PostsBloc>()
+                                        .add(DownvotePost(
+                                            userId: user.uid, post: post)),
                                     icon: Icon(
                                       Icons.arrow_downward,
                                       size: 30,

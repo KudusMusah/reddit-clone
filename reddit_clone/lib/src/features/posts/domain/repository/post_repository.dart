@@ -29,4 +29,6 @@ abstract interface class PostRepository {
     List<CommunityEntity> communities,
   );
   Future<Either<Failure, void>> deletePost(String postId);
+  Future<Either<Failure, void>> downVotePost(PostEntity post, String userId);
+  Future<Either<Failure, void>> upVotePost(PostEntity post, String userId);
 }

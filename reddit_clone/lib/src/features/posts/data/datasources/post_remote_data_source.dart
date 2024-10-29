@@ -11,6 +11,8 @@ abstract interface class PostRemoteDataSource {
   Future<String> uploadImage(String path, String id, File image);
   Stream<List<PostModel>> fetchUserFeed(List<CommunityModel> communities);
   Future<void> deletePost(String postId);
+  Future<void> upVotePost(PostModel post, String userId);
+  Future<void> downVotePost(PostModel post, String userId);
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -74,8 +76,61 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<void> deletePost(String postId) async {
     try {
-      print(postId);
       await _post.doc(postId).delete();
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> downVotePost(PostModel post, String userId) async {
+    try {
+      if (post.upvotes.contains(userId)) {
+        _post.doc(post.id).update({
+          "upvotes": FieldValue.arrayRemove([userId]),
+          "downvotes": FieldValue.arrayUnion([userId]),
+        });
+        return;
+      }
+
+      if (post.downvotes.contains(userId)) {
+        _post.doc(post.id).update({
+          "downvotes": FieldValue.arrayRemove([userId]),
+        });
+        return;
+      }
+      _post.doc(post.id).update({
+        "downvotes": FieldValue.arrayUnion([userId]),
+      });
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> upVotePost(PostModel post, String userId) async {
+    try {
+      if (post.downvotes.contains(userId)) {
+        _post.doc(post.id).update({
+          "downvotes": FieldValue.arrayRemove([userId]),
+          "upvotes": FieldValue.arrayUnion([userId]),
+        });
+        return;
+      }
+
+      if (post.upvotes.contains(userId)) {
+        _post.doc(post.id).update({
+          "upvotes": FieldValue.arrayRemove([userId]),
+        });
+        return;
+      }
+      _post.doc(post.id).update({
+        "upvotes": FieldValue.arrayUnion([userId]),
+      });
     } on FirebaseException catch (e) {
       throw PostException(e.message ?? e.toString());
     } catch (e) {

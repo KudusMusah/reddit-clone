@@ -52,3 +52,23 @@ class DeletePost extends PostsEvent {
     required this.postId,
   });
 }
+
+class UpvotePost extends PostsEvent {
+  final String userId;
+  final PostEntity post;
+
+  UpvotePost({
+    required this.userId,
+    required this.post,
+  });
+}
+
+class DownvotePost extends PostsEvent {
+  final String userId;
+  final PostEntity post;
+
+  DownvotePost({
+    required this.userId,
+    required this.post,
+  });
+}

@@ -217,12 +217,24 @@ void _initPosts() {
         postRepository: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => UpvotePostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => DownvotePostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton(
       () => PostsBloc(
         createImagePostUsecase: serviceLocator(),
         createLinkPostUsecase: serviceLocator(),
         createTextPostUsecase: serviceLocator(),
         deletePostUsecase: serviceLocator(),
+        upvotePostUsecase: serviceLocator(),
+        downvotePostUsecase: serviceLocator(),
       ),
     )
     ..registerLazySingleton(
