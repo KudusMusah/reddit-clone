@@ -6,11 +6,66 @@ import 'package:reddit_clone/src/core/constants/constants.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
+import 'package:reddit_clone/src/core/utils/snackbar.dart';
 import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
+import 'package:routemaster/routemaster.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
   final PostEntity post;
+
+  void _openDialogBox(BuildContext context, String postId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog.adaptive(
+        actions: [
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text("Are you sure you want to delete"),
+            ),
+          ),
+          BlocConsumer<PostsBloc, PostsState>(
+            listener: (context, state) {
+              if (state is PostsFailure) {
+                Routemaster.of(context).pop();
+                showSnackBar(context, state.message);
+              }
+              if (state is PostsSuccess) {
+                Routemaster.of(context).pop();
+                showSnackBar(context, "Post has been deleted!");
+              }
+            },
+            builder: (context, state) {
+              if (state is PostsLoading) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              }
+              return TextButton(
+                onPressed: () {
+                  context.read<PostsBloc>().add(DeletePost(postId: postId));
+                },
+                child: const Text("Yes"),
+              );
+            },
+          ),
+          TextButton(
+            onPressed: () => Routemaster.of(context).pop(),
+            child: const Text("Cancel"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +139,8 @@ class PostCard extends StatelessWidget {
                               ),
                               if (post.uid == user.uid)
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      _openDialogBox(context, post.id),
                                   icon: Icon(
                                     Icons.delete,
                                     color: AppColors.redColor,

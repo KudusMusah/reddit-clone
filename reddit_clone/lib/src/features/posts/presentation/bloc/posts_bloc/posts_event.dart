@@ -44,3 +44,11 @@ class CreateLinkPost extends PostsEvent {
     required this.user,
   });
 }
+
+class DeletePost extends PostsEvent {
+  final String postId;
+
+  DeletePost({
+    required this.postId,
+  });
+}

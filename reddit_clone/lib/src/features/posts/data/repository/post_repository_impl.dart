@@ -18,7 +18,7 @@ class PostRepositoryImpl implements PostRepository {
   PostRepositoryImpl({required this.postRemoteDataSource, required this.uuid});
 
   @override
-  Future<Either<PostFailure, void>> createImagePost(
+  Future<Either<Failure, void>> createImagePost(
     String title,
     File image,
     CommunityEntity community,
@@ -56,7 +56,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<PostFailure, void>> createLinkPost(
+  Future<Either<Failure, void>> createLinkPost(
     String title,
     String link,
     CommunityEntity community,
@@ -88,7 +88,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<PostFailure, void>> createTextPost(
+  Future<Either<Failure, void>> createTextPost(
     String title,
     String description,
     CommunityEntity community,
@@ -120,7 +120,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<PostFailure, Stream<List<PostEntity>>>> fetchUserFeed(
+  Future<Either<Failure, Stream<List<PostEntity>>>> fetchUserFeed(
     List<CommunityEntity> communities,
   ) async {
     return right(
@@ -128,5 +128,15 @@ class PostRepositoryImpl implements PostRepository {
         communities.map((comm) => CommunityMapper.entityToModel(comm)).toList(),
       ),
     );
+  }
+
+  @override
+  Future<Either<Failure, void>> deletePost(String postId) async {
+    try {
+      await postRemoteDataSource.deletePost(postId);
+      return right(null);
+    } on PostException catch (e) {
+      return left(PostFailure(e.message));
+    }
   }
 }

@@ -10,6 +10,7 @@ abstract interface class PostRemoteDataSource {
   Future<void> createPost(PostModel post);
   Future<String> uploadImage(String path, String id, File image);
   Stream<List<PostModel>> fetchUserFeed(List<CommunityModel> communities);
+  Future<void> deletePost(String postId);
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -68,5 +69,17 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         return streamPosts;
       },
     );
+  }
+
+  @override
+  Future<void> deletePost(String postId) async {
+    try {
+      print(postId);
+      await _post.doc(postId).delete();
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
   }
 }
