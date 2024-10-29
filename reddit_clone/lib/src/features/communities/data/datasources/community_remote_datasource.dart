@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reddit_clone/src/core/common/models/user_model.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/common/models/community_model.dart';
+import 'package:reddit_clone/src/core/common/models/post_model.dart';
 
 abstract interface class CommunityRemoteDatasource {
   Future<void> createCommunity(CommunityModel community);
@@ -18,6 +19,7 @@ abstract interface class CommunityRemoteDatasource {
   Future<List<UserModel>> getCommunityMembers(String communityName);
   Future<UserModel> getUserWithId(String uid);
   Future<void> updateMods(String communityName, List<String> mods);
+  Stream<List<PostModel>> fetchCommunityPosts(String communityName);
 }
 
 class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
@@ -33,6 +35,7 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
   CollectionReference get _community =>
       _firebaseFirestore.collection("communities");
   CollectionReference get _users => _firebaseFirestore.collection("users");
+  CollectionReference get _post => _firebaseFirestore.collection("post");
 
   @override
   Future<void> createCommunity(CommunityModel community) async {
@@ -193,5 +196,24 @@ class CommunityRemoteDatasourceImpl implements CommunityRemoteDatasource {
     } catch (e) {
       throw CommunityException(e.toString());
     }
+  }
+
+  @override
+  Stream<List<PostModel>> fetchCommunityPosts(String communityName) {
+    return _post
+        .where("communityName", isEqualTo: communityName)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map(
+      (posts) {
+        List<PostModel> streamPosts = [];
+        for (var e in posts.docs) {
+          streamPosts.add(
+            PostModel.fromJson(e.data() as Map<String, dynamic>),
+          );
+        }
+        return streamPosts;
+      },
+    );
   }
 }

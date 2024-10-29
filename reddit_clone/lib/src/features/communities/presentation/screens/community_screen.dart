@@ -5,6 +5,7 @@ import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
+import 'package:reddit_clone/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -59,7 +60,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
               child: Text("An unexpected error occured"),
             );
           }
+
           final community = state.community;
+          context.read<CreateCommunityBloc>().add(
+                FetchCommunityPosts(communityName: community.name),
+              );
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
@@ -81,7 +86,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate(
                       [
@@ -146,7 +151,29 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 ),
               ];
             },
-            body: const SizedBox(),
+            body: BlocBuilder<CreateCommunityBloc, CreateCommunityState>(
+              builder: (context, state) {
+                if (state is CreateCommunityLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is CreateCommunityFailure) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                }
+                if (state is CommunityPostsSuccess) {
+                  return ListView.builder(
+                    itemCount: state.posts.length,
+                    itemBuilder: (context, index) => PostCard(
+                      post: state.posts[index],
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
           );
         },
       ),

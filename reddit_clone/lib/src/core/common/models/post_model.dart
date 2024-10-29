@@ -1,4 +1,4 @@
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 class PostModel extends PostEntity {
   PostModel({

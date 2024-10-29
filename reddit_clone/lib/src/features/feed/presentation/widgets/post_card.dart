@@ -7,7 +7,7 @@ import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -102,7 +102,8 @@ class PostCard extends StatelessWidget {
                               Row(
                                 children: [
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () => Routemaster.of(context)
+                                        .push('/r/${post.communityName}'),
                                     child: CircleAvatar(
                                       backgroundImage:
                                           CachedNetworkImageProvider(
@@ -125,7 +126,8 @@ class PostCard extends StatelessWidget {
                                           ),
                                         ),
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () => Routemaster.of(context)
+                                              .push('/u/${post.uid}'),
                                           child: Text(
                                             'u/${post.username}',
                                             style:

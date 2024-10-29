@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/usecase/usecase.dart';
 import 'package:reddit_clone/src/features/auth/domain/usecases/auth_state_changes_usecases.dart';
@@ -33,6 +34,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOut>(signOut);
     on<GetSignedInUserData>(getSignedInUserData);
     on<GetUserData>(getUserData);
+    on<GetUserDataDone>(
+        (event, emit) => emit(GetUserDataSuccess(user: event.user)));
+    on<GetUserDataFailed>(
+        (event, emit) => emit(AuthFailure(message: event.message)));
 
     _initializeAuthStateChanges();
   }
@@ -89,7 +94,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     res.fold(
       (l) => emit(AuthFailure(message: l.message)),
-      (r) => emit(AuthSuccess()),
+      (r) {
+        r.listen(
+          (user) => add(GetUserDataDone(user: user)),
+          onError: (object) => add(GetUserDataFailed(
+            message: "An unexpected erro occured",
+          )),
+        );
+      },
     );
   }
 

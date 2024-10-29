@@ -10,6 +10,7 @@ import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/features/communities/data/datasources/community_remote_datasource.dart';
 import 'package:reddit_clone/src/core/common/models/community_model.dart';
 import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 class CommunityRepositoryImpl implements CommunityRepository {
   final CommunityRemoteDatasource communityRemoteDatasource;
@@ -131,5 +132,12 @@ class CommunityRepositoryImpl implements CommunityRepository {
     } on CommunityException catch (e) {
       return left(Failure(e.message));
     }
+  }
+
+  @override
+  Either<Failure, Stream<List<PostEntity>>> fetchCommunityPosts(
+    String communityName,
+  ) {
+    return right(communityRemoteDatasource.fetchCommunityPosts(communityName));
   }
 }

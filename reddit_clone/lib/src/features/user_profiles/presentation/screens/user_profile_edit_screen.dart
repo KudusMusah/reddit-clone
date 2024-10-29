@@ -12,8 +12,8 @@ import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profil
 import 'package:routemaster/routemaster.dart';
 
 class UserProfileEditScreen extends StatefulWidget {
-  const UserProfileEditScreen({super.key, required this.name});
-  final String name;
+  const UserProfileEditScreen({super.key, required this.uid});
+  final String uid;
 
   @override
   State<UserProfileEditScreen> createState() => _UserProfileEditScreenState();

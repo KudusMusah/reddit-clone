@@ -1,5 +1,5 @@
-import 'package:reddit_clone/src/features/posts/data/models/post_model.dart';
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/models/post_model.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 class PostMapper {
   static PostModel entityToModel(PostEntity entity) {

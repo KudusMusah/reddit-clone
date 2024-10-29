@@ -11,6 +11,7 @@ import 'package:reddit_clone/src/features/communities/presentation/bloc/create_c
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/user_posts_bloc/user_posts_bloc.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
@@ -50,6 +51,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => serviceLocator<UserFeedBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<UserPostsBloc>(),
         ),
       ],
       child: const MyApp(),

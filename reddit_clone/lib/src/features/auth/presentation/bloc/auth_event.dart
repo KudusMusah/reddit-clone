@@ -20,3 +20,17 @@ class GetUserData extends AuthEvent {
     required this.uid,
   });
 }
+
+class GetUserDataDone extends AuthEvent {
+  final UserEntity user;
+  GetUserDataDone({
+    required this.user,
+  });
+}
+
+class GetUserDataFailed extends AuthEvent {
+  final String message;
+  GetUserDataFailed({
+    required this.message,
+  });
+}

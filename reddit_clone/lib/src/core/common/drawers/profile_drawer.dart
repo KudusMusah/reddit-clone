@@ -35,7 +35,7 @@ class ProfileDrawer extends StatelessWidget {
               title: const Text('My Profile'),
               leading: const Icon(Icons.person),
               onTap: () {
-                Routemaster.of(context).push("u/${user.name}");
+                Routemaster.of(context).push("u/${user.uid}");
               },
             ),
             ListTile(

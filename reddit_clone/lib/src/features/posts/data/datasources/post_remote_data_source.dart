@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/common/models/community_model.dart';
-import 'package:reddit_clone/src/features/posts/data/models/post_model.dart';
+import 'package:reddit_clone/src/core/common/models/post_model.dart';
 
 abstract interface class PostRemoteDataSource {
   Future<void> createPost(PostModel post);
@@ -13,6 +13,7 @@ abstract interface class PostRemoteDataSource {
   Future<void> deletePost(String postId);
   Future<void> upVotePost(PostModel post, String userId);
   Future<void> downVotePost(PostModel post, String userId);
+  Stream<List<PostModel>> fetchUserPosts(String uid);
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -49,28 +50,6 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     } catch (e) {
       throw PostException(e.toString());
     }
-  }
-
-  @override
-  Stream<List<PostModel>> fetchUserFeed(List<CommunityModel> communities) {
-    return _post
-        .where(
-          "communityName",
-          whereIn: communities.map((e) => e.name).toList(),
-        )
-        .orderBy("createdAt", descending: true)
-        .snapshots()
-        .map(
-      (posts) {
-        List<PostModel> streamPosts = [];
-        for (var e in posts.docs) {
-          streamPosts.add(
-            PostModel.fromJson(e.data() as Map<String, dynamic>),
-          );
-        }
-        return streamPosts;
-      },
-    );
   }
 
   @override
@@ -136,5 +115,46 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     } catch (e) {
       throw PostException(e.toString());
     }
+  }
+
+  @override
+  Stream<List<PostModel>> fetchUserFeed(List<CommunityModel> communities) {
+    return _post
+        .where(
+          "communityName",
+          whereIn: communities.map((e) => e.name).toList(),
+        )
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map(
+      (posts) {
+        List<PostModel> streamPosts = [];
+        for (var e in posts.docs) {
+          streamPosts.add(
+            PostModel.fromJson(e.data() as Map<String, dynamic>),
+          );
+        }
+        return streamPosts;
+      },
+    );
+  }
+
+  @override
+  Stream<List<PostModel>> fetchUserPosts(String uid) {
+    return _post
+        .where("uid", isEqualTo: uid)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map(
+      (posts) {
+        List<PostModel> streamPosts = [];
+        for (var e in posts.docs) {
+          streamPosts.add(
+            PostModel.fromJson(e.data() as Map<String, dynamic>),
+          );
+        }
+        return streamPosts;
+      },
+    );
   }
 }

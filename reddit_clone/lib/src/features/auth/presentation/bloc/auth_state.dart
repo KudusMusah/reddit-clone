@@ -14,3 +14,9 @@ class AuthFailure extends AuthState {
 }
 
 class AuthSuccess extends AuthState {}
+
+class GetUserDataSuccess extends AuthState {
+  final UserEntity user;
+
+  GetUserDataSuccess({required this.user});
+}

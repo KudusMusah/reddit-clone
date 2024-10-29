@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/create_community_usecase.dart';
+import 'package:reddit_clone/src/features/communities/domain/usecase/fetch_community_posts_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/get_community_members_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/get_query_communities_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/join_community_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/leave_community_usease.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/update_community_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/update_mods_usecase.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 part 'create_community_event.dart';
 part 'create_community_state.dart';
@@ -24,22 +26,25 @@ class CreateCommunityBloc
   final LeaveCommunityUsease _leaveCommunityUsease;
   final GetCommunityMembersUsecase _getCommunityMembersUsecase;
   final UpdateModsUsecase _updateModsUsecase;
+  final FetchCommunityPostsUsecase _fetchCommunityPostsUsecase;
 
-  CreateCommunityBloc({
-    required CreateCommunityUsecase createCommunityUsecase,
-    required UpdateCommunityUsecase updateCommunityUsecase,
-    required GetQueryCommunitiesUsecase getQueryCommunitiesUsecase,
-    required JoinCommunityUsecase joinCommunityUsecase,
-    required LeaveCommunityUsease leaveCommunityUsease,
-    required GetCommunityMembersUsecase getCommunityMembersUsecase,
-    required UpdateModsUsecase updateModsUsecase,
-  })  : _createCommunityUsecase = createCommunityUsecase,
+  CreateCommunityBloc(
+      {required CreateCommunityUsecase createCommunityUsecase,
+      required UpdateCommunityUsecase updateCommunityUsecase,
+      required GetQueryCommunitiesUsecase getQueryCommunitiesUsecase,
+      required JoinCommunityUsecase joinCommunityUsecase,
+      required LeaveCommunityUsease leaveCommunityUsease,
+      required GetCommunityMembersUsecase getCommunityMembersUsecase,
+      required UpdateModsUsecase updateModsUsecase,
+      required FetchCommunityPostsUsecase fetchCommunityPostsUsecase})
+      : _createCommunityUsecase = createCommunityUsecase,
         _updateCommunityUsecase = updateCommunityUsecase,
         _getQueryCommunitiesUsecase = getQueryCommunitiesUsecase,
         _joinCommunityUsecase = joinCommunityUsecase,
         _leaveCommunityUsease = leaveCommunityUsease,
         _getCommunityMembersUsecase = getCommunityMembersUsecase,
         _updateModsUsecase = updateModsUsecase,
+        _fetchCommunityPostsUsecase = fetchCommunityPostsUsecase,
         super(CreateCommunityInitial()) {
     on<CreateCommunity>(onCreateCommunity);
     on<UpdateCommunityEvent>(onEditCommunity);
@@ -52,6 +57,11 @@ class CreateCommunityBloc
         emit(CreateCommunityFailure("An unexpected error occured")));
     on<QueryCommunitiesFetched>((event, emit) =>
         emit(GetQueryCommunitySuccess(communities: event.communities)));
+    on<FetchCommunityPosts>(onFetchCommunityPosts);
+    on<OnPostsFailed>(
+        (event, emit) => emit(CreateCommunityFailure(event.message)));
+    on<OnPostsFetched>(
+        (event, emit) => emit(CommunityPostsSuccess(posts: event.posts)));
   }
 
   void onCreateCommunity(
@@ -169,6 +179,31 @@ class CreateCommunityBloc
     res.fold(
       (l) => emit(CreateCommunityFailure(l.message)),
       (r) => emit(GetCommunityMembersSuccess(members: r)),
+    );
+  }
+
+  void onFetchCommunityPosts(
+    FetchCommunityPosts event,
+    Emitter<CreateCommunityState> emit,
+  ) async {
+    emit(CreateCommunityLoading());
+    final res = await _fetchCommunityPostsUsecase(
+        GetCommunityPostsParams(communityName: event.communityName));
+
+    res.fold(
+      (l) => add(OnPostsFailed(message: l.message)),
+      (r) {
+        r.listen(
+          (posts) {
+            add(OnPostsFetched(posts: posts));
+          },
+          onError: (object) {
+            add(
+              OnPostsFailed(message: "An unexpected error occured"),
+            );
+          },
+        );
+      },
     );
   }
 }

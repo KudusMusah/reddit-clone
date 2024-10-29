@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
@@ -54,7 +55,9 @@ class CustomSearchDelegates extends SearchDelegate {
                   Routemaster.of(context).push('/r/${community.name}');
                 },
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(community.profileImage),
+                  backgroundImage: CachedNetworkImageProvider(
+                    community.profileImage,
+                  ),
                 ),
                 title: Text("r/${community.name}"),
               );

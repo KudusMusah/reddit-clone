@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/get_user_feed_usecase.dart';
 
 part 'user_feed_event.dart';

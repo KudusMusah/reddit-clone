@@ -28,14 +28,14 @@ final loggedInRoutes = RouteMap(
             name: route.pathParameters["name"]!,
           ),
         ),
-    "/u/:name": (route) => MaterialPage(
+    "/u/:uid": (route) => MaterialPage(
           child: UserProfileScreen(
-            name: route.pathParameters["name"]!,
+            uid: route.pathParameters["uid"]!,
           ),
         ),
-    "/u/:name/edit": (route) => MaterialPage(
+    "/u/:uid/edit": (route) => MaterialPage(
           child: UserProfileEditScreen(
-            name: route.pathParameters["name"]!,
+            uid: route.pathParameters["uid"]!,
           ),
         ),
     "/r/:name/mod-tools": (route) => MaterialPage(

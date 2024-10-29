@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_image_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_link_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_text_post_usecase.dart';

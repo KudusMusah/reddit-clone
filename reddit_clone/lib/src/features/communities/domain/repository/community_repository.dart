@@ -4,6 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 abstract interface class CommunityRepository {
   Future<Either<Failure, void>> createCommunity(String name, String creatorUid);
@@ -21,4 +22,7 @@ abstract interface class CommunityRepository {
       String communityName);
   Future<Either<Failure, void>> updateMods(
       String communityName, List<String> mods);
+  Either<Failure, Stream<List<PostEntity>>> fetchCommunityPosts(
+    String communityName,
+  );
 }

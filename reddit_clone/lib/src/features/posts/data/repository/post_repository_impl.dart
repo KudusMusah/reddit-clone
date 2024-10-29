@@ -8,8 +8,8 @@ import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/core/mappers/post_mapper.dart';
 import 'package:reddit_clone/src/features/posts/data/datasources/post_remote_data_source.dart';
-import 'package:reddit_clone/src/features/posts/data/models/post_model.dart';
-import 'package:reddit_clone/src/features/posts/domain/entities/post_entity.dart';
+import 'package:reddit_clone/src/core/common/models/post_model.dart';
+import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/domain/repository/post_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -121,17 +121,6 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<PostEntity>>>> fetchUserFeed(
-    List<CommunityEntity> communities,
-  ) async {
-    return right(
-      postRemoteDataSource.fetchUserFeed(
-        communities.map((comm) => CommunityMapper.entityToModel(comm)).toList(),
-      ),
-    );
-  }
-
-  @override
   Future<Either<Failure, void>> deletePost(String postId) async {
     try {
       await postRemoteDataSource.deletePost(postId);
@@ -167,5 +156,21 @@ class PostRepositoryImpl implements PostRepository {
     } on PostException catch (e) {
       return left(PostFailure(e.message));
     }
+  }
+
+  @override
+  Either<Failure, Stream<List<PostModel>>> fetchUserFeed(
+    List<CommunityEntity> communities,
+  ) {
+    return right(
+      postRemoteDataSource.fetchUserFeed(
+        communities.map((comm) => CommunityMapper.entityToModel(comm)).toList(),
+      ),
+    );
+  }
+
+  @override
+  Either<Failure, Stream<List<PostModel>>> fetchUserPosts(String uid) {
+    return right(postRemoteDataSource.fetchUserPosts(uid));
   }
 }

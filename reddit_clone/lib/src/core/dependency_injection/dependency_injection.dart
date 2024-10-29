@@ -123,6 +123,11 @@ void _initCommunity() {
     ..registerFactory(
       () => UpdateModsUsecase(communityRepository: serviceLocator()),
     )
+    ..registerFactory(
+      () => FetchCommunityPostsUsecase(
+        communityRepository: serviceLocator(),
+      ),
+    )
 
     // Cubits
     ..registerLazySingleton(
@@ -145,6 +150,7 @@ void _initCommunity() {
         leaveCommunityUsease: serviceLocator(),
         getCommunityMembersUsecase: serviceLocator(),
         updateModsUsecase: serviceLocator(),
+        fetchCommunityPostsUsecase: serviceLocator(),
       ),
     );
 }
@@ -227,6 +233,11 @@ void _initPosts() {
         postRepository: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => FetchUserPostsUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton(
       () => PostsBloc(
         createImagePostUsecase: serviceLocator(),
@@ -240,6 +251,11 @@ void _initPosts() {
     ..registerLazySingleton(
       () => UserFeedBloc(
         getUserFeedUsecase: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => UserPostsBloc(
+        fetchUserPostsUsecase: serviceLocator(),
       ),
     );
 }

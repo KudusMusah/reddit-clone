@@ -25,3 +25,8 @@ final class GetCommunityMembersSuccess extends CreateCommunityState {
 
   GetCommunityMembersSuccess({required this.members});
 }
+
+final class CommunityPostsSuccess extends CreateCommunityState {
+  final List<PostEntity> posts;
+  CommunityPostsSuccess({required this.posts});
+}

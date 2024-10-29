@@ -1,25 +1,24 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/usecase/usecase.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/domain/repository/post_repository.dart';
 
-class GetUserFeedUsecase
-    implements Usecase<Stream<List<PostEntity>>, GetUserFeedParams> {
+class FetchUserPostsUsecase
+    implements Usecase<Stream<List<PostEntity>>, GetUserPostsParams> {
   final PostRepository postRepository;
-  GetUserFeedUsecase({required this.postRepository});
+  FetchUserPostsUsecase({required this.postRepository});
 
   @override
   Future<Either<Failure, Stream<List<PostEntity>>>> call(
-    GetUserFeedParams params,
+    GetUserPostsParams params,
   ) async {
-    return postRepository.fetchUserFeed(params.communities);
+    return postRepository.fetchUserPosts(params.uid);
   }
 }
 
-class GetUserFeedParams {
-  final List<CommunityEntity> communities;
+class GetUserPostsParams {
+  final String uid;
 
-  GetUserFeedParams({required this.communities});
+  GetUserPostsParams({required this.uid});
 }

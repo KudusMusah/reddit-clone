@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,8 +126,8 @@ class _EditCommunityState extends State<EditCommunity> {
                                           size: 40,
                                         ),
                                       )
-                                    : Image.network(
-                                        community.banner,
+                                    : CachedNetworkImage(
+                                        imageUrl: community.banner,
                                         fit: BoxFit.cover,
                                       ),
                           ),
@@ -145,7 +146,9 @@ class _EditCommunityState extends State<EditCommunity> {
                                             Constants.avatarDefault
                                     ? const NetworkImage(
                                         Constants.avatarDefault)
-                                    : NetworkImage(community.profileImage),
+                                    : CachedNetworkImageProvider(
+                                        community.profileImage,
+                                      ),
                             radius: 32,
                           ),
                         ),
