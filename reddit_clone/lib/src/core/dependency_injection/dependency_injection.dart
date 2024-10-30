@@ -175,9 +175,15 @@ void _initProfile() {
         profileRepository: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => UpdateKarmaUsecase(
+        profileRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton(
       () => ProfileBloc(
         editProfileUsecase: serviceLocator(),
+        updateKarmaUsecase: serviceLocator(),
       ),
     );
 }

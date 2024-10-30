@@ -69,10 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-          ),
           Builder(builder: (context) {
             return IconButton(
               icon: CircleAvatar(

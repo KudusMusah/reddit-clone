@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
+import 'package:reddit_clone/src/core/enums/karma.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_comments/posts_comments_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/widgets/comment_card.dart';
+import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
 
-class PostDetailScreen extends StatefulWidget {
-  const PostDetailScreen({super.key, required this.id});
+class PostComments extends StatefulWidget {
+  const PostComments({super.key, required this.id});
   final String id;
 
   @override
-  State<PostDetailScreen> createState() => _PostDetailScreenState();
+  State<PostComments> createState() => _PostCommentsState();
 }
 
-class _PostDetailScreenState extends State<PostDetailScreen> {
+class _PostCommentsState extends State<PostComments> {
   final commentController = TextEditingController();
   @override
   void initState() {
@@ -33,6 +35,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           username: user.name,
           profilePic: user.profilePic,
         ));
+    context
+        .read<ProfileBloc>()
+        .add(UpdateKarma(uid: user.uid, karma: UserKarma.comment));
     commentController.text = "";
   }
 

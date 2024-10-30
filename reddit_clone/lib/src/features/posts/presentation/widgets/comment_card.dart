@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit_clone/src/features/posts/domain/entities/comments.dart';
 
@@ -21,7 +22,7 @@ class CommentCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(
+                backgroundImage: CachedNetworkImageProvider(
                   comment.profilePic,
                 ),
                 radius: 18,

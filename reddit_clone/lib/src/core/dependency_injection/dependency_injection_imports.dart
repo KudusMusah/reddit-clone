@@ -51,6 +51,7 @@ import 'package:reddit_clone/src/features/user_profiles/data/datasources/profile
 import 'package:reddit_clone/src/features/user_profiles/data/repository/profile_repository_impl.dart';
 import 'package:reddit_clone/src/features/user_profiles/domain/repository/profile_repository.dart';
 import 'package:reddit_clone/src/features/user_profiles/domain/usecases/edit_profile_usecase.dart';
+import 'package:reddit_clone/src/features/user_profiles/domain/usecases/update_user_karma_usecase.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';

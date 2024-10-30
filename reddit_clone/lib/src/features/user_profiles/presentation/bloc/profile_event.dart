@@ -16,3 +16,13 @@ final class EditProfile extends ProfileEvent {
     required this.name,
   });
 }
+
+final class UpdateKarma extends ProfileEvent {
+  final String uid;
+  final UserKarma karma;
+
+  UpdateKarma({
+    required this.uid,
+    required this.karma,
+  });
+}

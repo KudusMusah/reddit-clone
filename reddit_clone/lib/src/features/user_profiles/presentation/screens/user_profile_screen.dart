@@ -112,10 +112,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
                             child: Text(
-                              '5 karma',
+                              '${user.karma} karma',
                             ),
                           ),
                           const SizedBox(height: 10),
