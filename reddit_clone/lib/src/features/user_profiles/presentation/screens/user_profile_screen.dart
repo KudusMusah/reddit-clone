@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:reddit_clone/src/features/feed/presentation/widgets/post_card.dart';
+import 'package:reddit_clone/src/core/common/widgets/post_card.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_posts_bloc/user_posts_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 

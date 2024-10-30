@@ -8,6 +8,7 @@ import 'package:reddit_clone/src/features/communities/presentation/screens/edit_
 import 'package:reddit_clone/src/features/communities/presentation/screens/mod_tools_screen.dart';
 import 'package:reddit_clone/src/features/home/presentation/screens/home_screen.dart';
 import 'package:reddit_clone/src/features/posts/presentation/screens/add_post_type.dart';
+import 'package:reddit_clone/src/features/posts/presentation/screens/post_detail_screen.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/screens/user_profile_edit_screen.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/screens/user_profile_screen.dart';
 import 'package:routemaster/routemaster.dart';
@@ -56,6 +57,11 @@ final loggedInRoutes = RouteMap(
     "/post/:type": (route) => MaterialPage(
           child: AddPostType(
             type: route.pathParameters["type"]!,
+          ),
+        ),
+    "/post/detail/:id": (route) => MaterialPage(
+          child: PostDetailScreen(
+            id: route.pathParameters["id"]!,
           ),
         ),
   },

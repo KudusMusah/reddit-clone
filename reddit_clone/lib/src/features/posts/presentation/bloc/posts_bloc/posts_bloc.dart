@@ -6,11 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/create_comment_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_image_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_link_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_text_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/delete_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/downvote_post_usecase.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/get_post_with_id_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/upvote_post_usecase.dart';
 
 part 'posts_event.dart';
@@ -23,6 +25,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final DeletePostUsecase _deletePostUsecase;
   final UpvotePostUsecase _upvotePostUsecase;
   final DownvotePostUsecase _downvotePostUsecase;
+  final GetPostWithIdUsecase _getPostWithIdUsecase;
+  final CreateCommentUsecase _createCommentUsecase;
 
   PostsBloc({
     required CreateImagePostUsecase createImagePostUsecase,
@@ -31,12 +35,16 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     required DeletePostUsecase deletePostUsecase,
     required UpvotePostUsecase upvotePostUsecase,
     required DownvotePostUsecase downvotePostUsecase,
+    required GetPostWithIdUsecase getPostWithIdUsecase,
+    required CreateCommentUsecase createCommentUsecase,
   })  : _createImagePostUsecase = createImagePostUsecase,
         _createTextPostUsecase = createTextPostUsecase,
         _createLinkPostUsecase = createLinkPostUsecase,
         _deletePostUsecase = deletePostUsecase,
         _upvotePostUsecase = upvotePostUsecase,
         _downvotePostUsecase = downvotePostUsecase,
+        _getPostWithIdUsecase = getPostWithIdUsecase,
+        _createCommentUsecase = createCommentUsecase,
         super(PostsInitial()) {
     on<CreateImagePost>(onCreateImagePost);
     on<CreateTextPost>(onCreateTextPost);
@@ -44,6 +52,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     on<DeletePost>(onDeletePost);
     on<UpvotePost>(onUpvotePost);
     on<DownvotePost>(onDownvotePost);
+    on<GetPostWithId>(onGetPostWithId);
+    on<CreateComment>(onCreateComment);
   }
 
   void onCreateImagePost(
@@ -136,6 +146,19 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     );
   }
 
+  void onGetPostWithId(
+    GetPostWithId event,
+    Emitter<PostsState> emit,
+  ) async {
+    emit(PostsLoading());
+    final res = await _getPostWithIdUsecase(GetPostWithIdParams(id: event.id));
+
+    res.fold(
+      (l) => emit(PostsFailure(message: l.message)),
+      (r) => emit(GetPostSuccess(post: r)),
+    );
+  }
+
   void onDownvotePost(
     DownvotePost event,
     Emitter<PostsState> emit,
@@ -149,6 +172,20 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     res.fold(
       (l) => emit(PostsFailure(message: l.message)),
       (r) => emit(PostsSuccess()),
+    );
+  }
+
+  void onCreateComment(CreateComment event, Emitter<PostsState> emit) async {
+    final res = await _createCommentUsecase(CreateCommentParams(
+      text: event.text,
+      postId: event.postId,
+      username: event.username,
+      profilePic: event.profilePic,
+    ));
+
+    res.fold(
+      (l) => emit(PostsFailure(message: l.message)),
+      (r) {},
     );
   }
 }

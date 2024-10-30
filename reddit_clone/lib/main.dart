@@ -9,6 +9,7 @@ import 'package:reddit_clone/src/core/routes/routes.dart';
 import 'package:reddit_clone/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_comments/posts_comments_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_posts_bloc/user_posts_bloc.dart';
@@ -54,6 +55,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => serviceLocator<UserPostsBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<PostsCommentsBloc>(),
         ),
       ],
       child: const MyApp(),

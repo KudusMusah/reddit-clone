@@ -246,19 +246,21 @@ class PostCard extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
+                              GestureDetector(
+                                onTap: () => Routemaster.of(context)
+                                    .push('post/detail/${post.id}'),
+                                child: Row(
+                                  children: [
+                                    const Icon(
                                       Icons.comment,
                                     ),
-                                  ),
-                                  Text(
-                                    '${post.commentCount == 0 ? 'Comment' : post.commentCount}',
-                                    style: const TextStyle(fontSize: 17),
-                                  ),
-                                ],
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${post.commentCount == 0 ? 'Comment' : post.commentCount}',
+                                      style: const TextStyle(fontSize: 17),
+                                    ),
+                                  ],
+                                ),
                               ),
                               IconButton(
                                 onPressed: () {

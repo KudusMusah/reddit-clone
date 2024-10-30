@@ -31,6 +31,7 @@ import 'package:reddit_clone/src/features/communities/presentation/bloc/user_com
 import 'package:reddit_clone/src/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:reddit_clone/src/features/posts/data/repository/post_repository_impl.dart';
 import 'package:reddit_clone/src/features/posts/domain/repository/post_repository.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/create_comment_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_image_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_link_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_text_post_usecase.dart';
@@ -38,8 +39,11 @@ import 'package:reddit_clone/src/features/posts/domain/usecases/delete_post_usec
 import 'package:reddit_clone/src/features/posts/domain/usecases/downvote_post_usecase.dart';
 import 'package:reddit_clone/src/features/communities/domain/usecase/fetch_community_posts_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/fetch_user_posts_usecase.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/get_post_comments_usecase.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/get_post_with_id_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/get_user_feed_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/upvote_post_usecase.dart';
+import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_comments/posts_comments_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_feed_bloc/user_feed_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/user_posts_bloc/user_posts_bloc.dart';

@@ -238,6 +238,21 @@ void _initPosts() {
         postRepository: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => GetPostWithIdUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => CreateCommentUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => GetPostCommentsUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton(
       () => PostsBloc(
         createImagePostUsecase: serviceLocator(),
@@ -246,11 +261,18 @@ void _initPosts() {
         deletePostUsecase: serviceLocator(),
         upvotePostUsecase: serviceLocator(),
         downvotePostUsecase: serviceLocator(),
+        getPostWithIdUsecase: serviceLocator(),
+        createCommentUsecase: serviceLocator(),
       ),
     )
     ..registerLazySingleton(
       () => UserFeedBloc(
         getUserFeedUsecase: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => PostsCommentsBloc(
+        getPostCommentsUsecase: serviceLocator(),
       ),
     )
     ..registerLazySingleton(

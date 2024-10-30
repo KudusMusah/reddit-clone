@@ -5,11 +5,13 @@ import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
+import 'package:reddit_clone/src/core/mappers/comment_mapper.dart';
 import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/core/mappers/post_mapper.dart';
 import 'package:reddit_clone/src/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:reddit_clone/src/core/common/models/post_model.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
+import 'package:reddit_clone/src/features/posts/domain/entities/comments.dart';
 import 'package:reddit_clone/src/features/posts/domain/repository/post_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -172,5 +174,44 @@ class PostRepositoryImpl implements PostRepository {
   @override
   Either<Failure, Stream<List<PostModel>>> fetchUserPosts(String uid) {
     return right(postRemoteDataSource.fetchUserPosts(uid));
+  }
+
+  @override
+  Future<Either<Failure, PostModel>> getPostWithId(String id) async {
+    try {
+      final post = await postRemoteDataSource.getPostWithId(id);
+      return right(post);
+    } on PostException catch (e) {
+      return left(PostFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> createComment(
+    String text,
+    String postId,
+    String username,
+    String profilePic,
+  ) async {
+    try {
+      final comment = CommentEntity(
+        id: uuid.v1(),
+        text: text,
+        createdAt: DateTime.now(),
+        postId: postId,
+        username: username,
+        profilePic: profilePic,
+      );
+      await postRemoteDataSource
+          .createComment(CommentMapper.entityToModel(comment));
+      return right(null);
+    } on PostException catch (e) {
+      return left(PostFailure(e.message));
+    }
+  }
+
+  @override
+  Either<Failure, Stream<List<CommentEntity>>> getPostComments(String postId) {
+    return right(postRemoteDataSource.getPostComments(postId));
   }
 }

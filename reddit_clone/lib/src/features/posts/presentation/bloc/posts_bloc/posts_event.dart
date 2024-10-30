@@ -72,3 +72,25 @@ class DownvotePost extends PostsEvent {
     required this.post,
   });
 }
+
+class GetPostWithId extends PostsEvent {
+  final String id;
+
+  GetPostWithId({
+    required this.id,
+  });
+}
+
+class CreateComment extends PostsEvent {
+  final String text;
+  final String postId;
+  final String username;
+  final String profilePic;
+
+  CreateComment({
+    required this.text,
+    required this.postId,
+    required this.username,
+    required this.profilePic,
+  });
+}

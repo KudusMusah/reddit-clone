@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/common/models/community_model.dart';
 import 'package:reddit_clone/src/core/common/models/post_model.dart';
+import 'package:reddit_clone/src/features/posts/data/models/comment_model.dart';
 
 abstract interface class PostRemoteDataSource {
   Future<void> createPost(PostModel post);
@@ -14,6 +15,9 @@ abstract interface class PostRemoteDataSource {
   Future<void> upVotePost(PostModel post, String userId);
   Future<void> downVotePost(PostModel post, String userId);
   Stream<List<PostModel>> fetchUserPosts(String uid);
+  Future<PostModel> getPostWithId(String id);
+  Stream<List<CommentModel>> getPostComments(String postId);
+  Future<void> createComment(CommentModel comment);
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -27,6 +31,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         _firebaseStorage = firebaseStorage;
 
   CollectionReference get _post => _firestore.collection("post");
+  CollectionReference get _comments => _firestore.collection("comments");
 
   @override
   Future<String> uploadImage(String path, String id, File image) async {
@@ -156,5 +161,50 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         return streamPosts;
       },
     );
+  }
+
+  @override
+  Future<PostModel> getPostWithId(String id) async {
+    try {
+      final post = await _post.doc(id).get();
+      return PostModel.fromJson(post.data() as Map<String, dynamic>);
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
+  }
+
+  @override
+  Stream<List<CommentModel>> getPostComments(postId) {
+    return _comments
+        .where("postId", isEqualTo: postId)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map(
+      (comments) {
+        List<CommentModel> streamComments = [];
+        for (var e in comments.docs) {
+          streamComments.add(
+            CommentModel.fromJson(e.data() as Map<String, dynamic>),
+          );
+        }
+        return streamComments;
+      },
+    );
+  }
+
+  @override
+  Future<void> createComment(CommentModel comment) async {
+    try {
+      _comments.doc(comment.id).set(comment.toJson());
+      _post.doc(comment.postId).update({
+        "commentCount": FieldValue.increment(1),
+      });
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
   }
 }

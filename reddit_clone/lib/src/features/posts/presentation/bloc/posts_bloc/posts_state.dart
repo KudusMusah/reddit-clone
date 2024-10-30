@@ -14,3 +14,9 @@ final class PostsFailure extends PostsState {
 
   PostsFailure({required this.message});
 }
+
+final class GetPostSuccess extends PostsState {
+  final PostEntity post;
+
+  GetPostSuccess({required this.post});
+}
