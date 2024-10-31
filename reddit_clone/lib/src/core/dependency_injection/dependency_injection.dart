@@ -135,6 +135,11 @@ void _initCommunity() {
     )
     // Blocs
     ..registerLazySingleton(
+      () => CommunityPostsBloc(
+        fetchCommunityPostsUsecase: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
       () => CommunityBloc(
         getUserCommunitiesUsecase: serviceLocator(),
         userCommunitiesCubit: serviceLocator(),
@@ -150,7 +155,6 @@ void _initCommunity() {
         leaveCommunityUsease: serviceLocator(),
         getCommunityMembersUsecase: serviceLocator(),
         updateModsUsecase: serviceLocator(),
-        fetchCommunityPostsUsecase: serviceLocator(),
       ),
     );
 }
@@ -259,6 +263,11 @@ void _initPosts() {
         postRepository: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => AwardPostUsecase(
+        postRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton(
       () => PostsBloc(
         createImagePostUsecase: serviceLocator(),
@@ -269,6 +278,7 @@ void _initPosts() {
         downvotePostUsecase: serviceLocator(),
         getPostWithIdUsecase: serviceLocator(),
         createCommentUsecase: serviceLocator(),
+        awardPostUsecase: serviceLocator(),
       ),
     )
     ..registerLazySingleton(

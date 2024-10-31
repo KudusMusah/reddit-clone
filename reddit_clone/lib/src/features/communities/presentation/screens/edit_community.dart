@@ -49,6 +49,7 @@ class _EditCommunityState extends State<EditCommunity> {
       Routemaster.of(context).pop();
       return;
     }
+
     context.read<CreateCommunityBloc>().add(
           UpdateCommunityEvent(
             community: community,
@@ -144,7 +145,7 @@ class _EditCommunityState extends State<EditCommunity> {
                                 : community.profileImage.isEmpty ||
                                         community.profileImage ==
                                             Constants.avatarDefault
-                                    ? const NetworkImage(
+                                    ? const CachedNetworkImageProvider(
                                         Constants.avatarDefault)
                                     : CachedNetworkImageProvider(
                                         community.profileImage,

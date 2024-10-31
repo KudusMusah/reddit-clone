@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/user_entity.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
+import 'package:reddit_clone/src/features/posts/domain/usecases/award_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_comment_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_image_post_usecase.dart';
 import 'package:reddit_clone/src/features/posts/domain/usecases/create_link_post_usecase.dart';
@@ -27,6 +28,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final DownvotePostUsecase _downvotePostUsecase;
   final GetPostWithIdUsecase _getPostWithIdUsecase;
   final CreateCommentUsecase _createCommentUsecase;
+  final AwardPostUsecase _awardPostUsecase;
 
   PostsBloc({
     required CreateImagePostUsecase createImagePostUsecase,
@@ -37,6 +39,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     required DownvotePostUsecase downvotePostUsecase,
     required GetPostWithIdUsecase getPostWithIdUsecase,
     required CreateCommentUsecase createCommentUsecase,
+    required AwardPostUsecase awardPostUsecase,
   })  : _createImagePostUsecase = createImagePostUsecase,
         _createTextPostUsecase = createTextPostUsecase,
         _createLinkPostUsecase = createLinkPostUsecase,
@@ -45,6 +48,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         _downvotePostUsecase = downvotePostUsecase,
         _getPostWithIdUsecase = getPostWithIdUsecase,
         _createCommentUsecase = createCommentUsecase,
+        _awardPostUsecase = awardPostUsecase,
         super(PostsInitial()) {
     on<CreateImagePost>(onCreateImagePost);
     on<CreateTextPost>(onCreateTextPost);
@@ -54,6 +58,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     on<DownvotePost>(onDownvotePost);
     on<GetPostWithId>(onGetPostWithId);
     on<CreateComment>(onCreateComment);
+    on<AwardPost>(onAwardPost);
   }
 
   void onCreateImagePost(
@@ -186,6 +191,21 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     res.fold(
       (l) => emit(PostsFailure(message: l.message)),
       (r) {},
+    );
+  }
+
+  void onAwardPost(AwardPost event, Emitter<PostsState> emit) async {
+    emit(PostsLoading());
+    final res = await _awardPostUsecase(AwardPostparams(
+      award: event.award,
+      postId: event.postId,
+      userId: event.userId,
+      posterid: event.posterId,
+    ));
+
+    res.fold(
+      (l) => emit(PostsFailure(message: l.message)),
+      (r) => emit(AwardPostSuccess()),
     );
   }
 }

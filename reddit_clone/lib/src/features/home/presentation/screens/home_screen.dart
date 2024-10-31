@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Builder(builder: (context) {
             return IconButton(
               icon: CircleAvatar(
-                backgroundImage: NetworkImage(user.profilePic),
+                backgroundImage: CachedNetworkImageProvider(user.profilePic),
                 radius: 18,
               ),
               onPressed: () => displayEndDrawer(context),

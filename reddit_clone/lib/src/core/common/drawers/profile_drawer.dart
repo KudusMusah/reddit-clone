@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
@@ -18,7 +19,7 @@ class ProfileDrawer extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(user.profilePic),
+              backgroundImage: CachedNetworkImageProvider(user.profilePic),
               radius: 70,
             ),
             const SizedBox(height: 10),

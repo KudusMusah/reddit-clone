@@ -95,6 +95,25 @@ class _AddPostTypeState extends State<AddPostType> {
         (context.watch<UserCommunitiesCubit>().state as UserCommunitiesSucess)
             .communities;
 
+    if (userCommmunities.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Post ${widget.type}',
+          ),
+        ),
+        body: const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            child: Text(
+              "You have to belong to at least one community in order to create a post",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Post ${widget.type}'),

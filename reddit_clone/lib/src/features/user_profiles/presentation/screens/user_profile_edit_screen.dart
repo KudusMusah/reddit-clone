@@ -146,8 +146,8 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                   radius: 32,
                                 )
                               : CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user.profilePic),
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      user.profilePic),
                                   radius: 32,
                                 ),
                         ),

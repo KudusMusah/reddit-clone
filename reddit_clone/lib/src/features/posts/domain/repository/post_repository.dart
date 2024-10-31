@@ -41,4 +41,10 @@ abstract interface class PostRepository {
     String username,
     String profilePic,
   );
+  Future<Either<Failure, void>> awardpost(
+    String award,
+    String postId,
+    String userId,
+    String posterid,
+  );
 }

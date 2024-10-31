@@ -60,21 +60,3 @@ final class UpdateMods extends CreateCommunityEvent {
 
   UpdateMods({required this.communityName, required this.mods});
 }
-
-final class FetchCommunityPosts extends CreateCommunityEvent {
-  final String communityName;
-
-  FetchCommunityPosts({required this.communityName});
-}
-
-final class OnPostsFetched extends CreateCommunityEvent {
-  final List<PostEntity> posts;
-
-  OnPostsFetched({required this.posts});
-}
-
-final class OnPostsFailed extends CreateCommunityEvent {
-  final String message;
-
-  OnPostsFailed({required this.message});
-}

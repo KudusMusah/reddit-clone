@@ -20,3 +20,7 @@ final class GetPostSuccess extends PostsState {
 
   GetPostSuccess({required this.post});
 }
+
+final class AwardPostSuccess extends PostsState {
+  AwardPostSuccess();
+}

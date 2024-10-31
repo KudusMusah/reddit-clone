@@ -18,6 +18,12 @@ abstract interface class PostRemoteDataSource {
   Future<PostModel> getPostWithId(String id);
   Stream<List<CommentModel>> getPostComments(String postId);
   Future<void> createComment(CommentModel comment);
+  Future<void> awardpost(
+    String award,
+    String postId,
+    String userId,
+    String posterid,
+  );
 }
 
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
@@ -32,6 +38,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
   CollectionReference get _post => _firestore.collection("post");
   CollectionReference get _comments => _firestore.collection("comments");
+  CollectionReference get _users => _firestore.collection("users");
 
   @override
   Future<String> uploadImage(String path, String id, File image) async {
@@ -72,7 +79,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   Future<void> downVotePost(PostModel post, String userId) async {
     try {
       if (post.upvotes.contains(userId)) {
-        _post.doc(post.id).update({
+        await _post.doc(post.id).update({
           "upvotes": FieldValue.arrayRemove([userId]),
           "downvotes": FieldValue.arrayUnion([userId]),
         });
@@ -99,7 +106,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   Future<void> upVotePost(PostModel post, String userId) async {
     try {
       if (post.downvotes.contains(userId)) {
-        _post.doc(post.id).update({
+        await _post.doc(post.id).update({
           "downvotes": FieldValue.arrayRemove([userId]),
           "upvotes": FieldValue.arrayUnion([userId]),
         });
@@ -124,6 +131,9 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
   @override
   Stream<List<PostModel>> fetchUserFeed(List<CommunityModel> communities) {
+    if (communities.isEmpty) {
+      return Stream.value([]);
+    }
     return _post
         .where(
           "communityName",
@@ -197,9 +207,27 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<void> createComment(CommentModel comment) async {
     try {
-      _comments.doc(comment.id).set(comment.toJson());
-      _post.doc(comment.postId).update({
+      await _comments.doc(comment.id).set(comment.toJson());
+      await _post.doc(comment.postId).update({
         "commentCount": FieldValue.increment(1),
+      });
+    } on FirebaseException catch (e) {
+      throw PostException(e.message ?? e.toString());
+    } catch (e) {
+      throw PostException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> awardpost(
+    String award,
+    String postId,
+    String userId,
+    String posterid,
+  ) async {
+    try {
+      await _post.doc(postId).update({
+        "awards": FieldValue.arrayUnion([award]),
       });
     } on FirebaseException catch (e) {
       throw PostException(e.message ?? e.toString());

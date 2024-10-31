@@ -94,3 +94,17 @@ class CreateComment extends PostsEvent {
     required this.profilePic,
   });
 }
+
+class AwardPost extends PostsEvent {
+  final String award;
+  final String postId;
+  final String userId;
+  final String posterId;
+
+  AwardPost({
+    required this.award,
+    required this.postId,
+    required this.userId,
+    required this.posterId,
+  });
+}

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
+import 'package:reddit_clone/src/features/communities/presentation/bloc/community_posts/community_posts_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/create_community/create_community_bloc.dart';
 import 'package:reddit_clone/src/features/communities/presentation/bloc/user_communities/community_bloc.dart';
 import 'package:reddit_clone/src/core/common/widgets/post_card.dart';
@@ -20,8 +21,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final name = widget.name.replaceAll("%20", " ");
-      context.read<CommunityBloc>().add(GetCommunity(name));
+      context.read<CommunityBloc>().add(GetCommunity(widget.name));
     });
     super.initState();
   }
@@ -56,13 +56,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
           }
 
           if (state is! GetCommunitySuccess) {
-            return const Center(
-              child: Text("An unexpected error occured"),
+            return Scaffold(
+              appBar: AppBar(),
+              body: const Center(
+                child: Text("An unexpected error occured"),
+              ),
             );
           }
 
           final community = state.community;
-          context.read<CreateCommunityBloc>().add(
+          context.read<CommunityPostsBloc>().add(
                 FetchCommunityPosts(communityName: community.name),
               );
           return NestedScrollView(
@@ -151,14 +154,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 ),
               ];
             },
-            body: BlocBuilder<CreateCommunityBloc, CreateCommunityState>(
+            body: BlocBuilder<CommunityPostsBloc, CommunityPostsState>(
               builder: (context, state) {
-                if (state is CreateCommunityLoading) {
+                if (state is CommunityPostsLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                if (state is CreateCommunityFailure) {
+                if (state is CommunityPostsFailure) {
                   return Center(
                     child: Text(state.message),
                   );

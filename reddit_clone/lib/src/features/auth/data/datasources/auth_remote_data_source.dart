@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/src/core/constants/constants.dart';
+import 'package:reddit_clone/src/core/enums/awards.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/common/models/user_model.dart';
 
@@ -55,7 +56,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
-
       if (userCredential.additionalUserInfo!.isNewUser) {
         final userModel = UserModel(
           uid: userCredential.user!.uid,
@@ -63,7 +63,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           profilePic: userCredential.user!.photoURL ?? Constants.avatarDefault,
           banner: Constants.bannerDefault,
           karma: 0,
-          awards: [],
+          awards: [
+            Award.awesomeAns.name,
+            Award.gold.name,
+            Award.platinum.name,
+            Award.helpful.name,
+            Award.plusone.name,
+            Award.rocket.name,
+            Award.thankyou.name,
+            Award.til.name,
+          ],
           isAuthenticated: true,
         );
         await _users.doc(userModel.uid).set(userModel.toJson());

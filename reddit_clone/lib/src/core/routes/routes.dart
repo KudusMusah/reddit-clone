@@ -26,7 +26,7 @@ final loggedInRoutes = RouteMap(
         const MaterialPage(child: CreateCommunityScreen()),
     "/r/:name": (route) => MaterialPage(
           child: CommunityScreen(
-            name: route.pathParameters["name"]!,
+            name: Uri.decodeComponent(route.pathParameters["name"]!),
           ),
         ),
     "/u/:uid": (route) => MaterialPage(
@@ -46,12 +46,12 @@ final loggedInRoutes = RouteMap(
         ),
     "/r/:name/mod-tools/edit": (route) => MaterialPage(
           child: EditCommunity(
-            name: route.pathParameters['name']!,
+            name: Uri.decodeComponent(route.pathParameters["name"]!),
           ),
         ),
     "/r/:name/mod-tools/add-mods": (route) => MaterialPage(
           child: AddModsScreen(
-            name: route.pathParameters['name']!,
+            name: Uri.decodeComponent(route.pathParameters["name"]!),
           ),
         ),
     "/post/:type": (route) => MaterialPage(
@@ -59,7 +59,7 @@ final loggedInRoutes = RouteMap(
             type: route.pathParameters["type"]!,
           ),
         ),
-    "/post/detail/:id": (route) => MaterialPage(
+    "/post/comments/:id": (route) => MaterialPage(
           child: PostComments(
             id: route.pathParameters["id"]!,
           ),

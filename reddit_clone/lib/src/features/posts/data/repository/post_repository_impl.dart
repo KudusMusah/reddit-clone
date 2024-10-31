@@ -214,4 +214,19 @@ class PostRepositoryImpl implements PostRepository {
   Either<Failure, Stream<List<CommentEntity>>> getPostComments(String postId) {
     return right(postRemoteDataSource.getPostComments(postId));
   }
+
+  @override
+  Future<Either<Failure, void>> awardpost(
+    String award,
+    String postId,
+    String userId,
+    String posterid,
+  ) async {
+    try {
+      await postRemoteDataSource.awardpost(award, postId, userId, posterid);
+      return right(null);
+    } on PostException catch (e) {
+      return left(PostFailure(e.message));
+    }
+  }
 }
