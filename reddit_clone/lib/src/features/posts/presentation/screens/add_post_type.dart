@@ -7,9 +7,11 @@ import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
+import 'package:reddit_clone/src/core/enums/karma.dart';
 import 'package:reddit_clone/src/core/utils/file_picker.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
+import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddPostType extends StatefulWidget {
@@ -43,6 +45,9 @@ class _AddPostTypeState extends State<AddPostType> {
               user: user,
             ),
           );
+      context
+          .read<ProfileBloc>()
+          .add(UpdateKarma(karma: UserKarma.imagePost, uid: user.uid));
     } else if (widget.type == 'text' && titleController.text.isNotEmpty) {
       context.read<PostsBloc>().add(
             CreateTextPost(
@@ -52,6 +57,9 @@ class _AddPostTypeState extends State<AddPostType> {
               user: user,
             ),
           );
+      context
+          .read<ProfileBloc>()
+          .add(UpdateKarma(karma: UserKarma.textPost, uid: user.uid));
     } else if (widget.type == 'link' &&
         titleController.text.isNotEmpty &&
         linkController.text.isNotEmpty) {
@@ -63,6 +71,9 @@ class _AddPostTypeState extends State<AddPostType> {
               user: user,
             ),
           );
+      context
+          .read<ProfileBloc>()
+          .add(UpdateKarma(karma: UserKarma.linkPost, uid: user.uid));
     } else {
       showSnackBar(context, 'Please enter all the fields');
     }

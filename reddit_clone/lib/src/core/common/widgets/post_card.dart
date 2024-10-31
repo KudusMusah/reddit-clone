@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/constants/constants.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
+import 'package:reddit_clone/src/core/enums/karma.dart';
 import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:reddit_clone/src/core/utils/snackbar.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
+import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
 import 'package:routemaster/routemaster.dart';
 
 class PostCard extends StatelessWidget {
@@ -23,6 +25,9 @@ class PostCard extends StatelessWidget {
   ) {
     context.read<PostsBloc>().add(AwardPost(
         award: award, postId: post.id, userId: userId, posterId: post.uid));
+    context
+        .read<ProfileBloc>()
+        .add(UpdateKarma(karma: UserKarma.awardPost, uid: userId));
   }
 
   void _showDialog(BuildContext context, user) {
@@ -74,7 +79,7 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  void _openDialogBox(BuildContext context, String postId) {
+  void _openDialogBox(BuildContext context, String postId, String userId) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog.adaptive(
@@ -112,6 +117,8 @@ class PostCard extends StatelessWidget {
               return TextButton(
                 onPressed: () {
                   context.read<PostsBloc>().add(DeletePost(postId: postId));
+                  context.read<ProfileBloc>().add(
+                      UpdateKarma(karma: UserKarma.deletePost, uid: userId));
                 },
                 child: const Center(child: Text("Yes")),
               );
@@ -202,8 +209,8 @@ class PostCard extends StatelessWidget {
                                 ),
                                 if (post.uid == user.uid)
                                   IconButton(
-                                    onPressed: () =>
-                                        _openDialogBox(context, post.id),
+                                    onPressed: () => _openDialogBox(
+                                        context, post.id, user.uid),
                                     icon: Icon(
                                       Icons.delete,
                                       color: AppColors.redColor,
