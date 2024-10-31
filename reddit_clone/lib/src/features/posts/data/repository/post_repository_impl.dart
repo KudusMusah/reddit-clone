@@ -8,6 +8,7 @@ import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/mappers/comment_mapper.dart';
 import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
 import 'package:reddit_clone/src/core/mappers/post_mapper.dart';
+import 'package:reddit_clone/src/core/network/internet_checker.dart';
 import 'package:reddit_clone/src/features/posts/data/datasources/post_remote_data_source.dart';
 import 'package:reddit_clone/src/core/common/models/post_model.dart';
 import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
@@ -18,7 +19,12 @@ import 'package:uuid/uuid.dart';
 class PostRepositoryImpl implements PostRepository {
   final PostRemoteDataSource postRemoteDataSource;
   final Uuid uuid;
-  PostRepositoryImpl({required this.postRemoteDataSource, required this.uuid});
+  final InternetChecker internetChecker;
+  PostRepositoryImpl({
+    required this.postRemoteDataSource,
+    required this.uuid,
+    required this.internetChecker,
+  });
 
   @override
   Future<Either<Failure, void>> createImagePost(
@@ -27,6 +33,9 @@ class PostRepositoryImpl implements PostRepository {
     CommunityEntity community,
     UserEntity user,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       PostModel post = PostModel(
         id: uuid.v4(),
@@ -65,6 +74,9 @@ class PostRepositoryImpl implements PostRepository {
     CommunityEntity community,
     UserEntity user,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       PostModel post = PostModel(
         id: uuid.v4(),
@@ -97,6 +109,9 @@ class PostRepositoryImpl implements PostRepository {
     CommunityEntity community,
     UserEntity user,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       PostModel post = PostModel(
         id: uuid.v4(),
@@ -124,6 +139,9 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<Either<Failure, void>> deletePost(String postId) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       await postRemoteDataSource.deletePost(postId);
       return right(null);
@@ -193,6 +211,9 @@ class PostRepositoryImpl implements PostRepository {
     String username,
     String profilePic,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       final comment = CommentEntity(
         id: uuid.v1(),
@@ -222,6 +243,9 @@ class PostRepositoryImpl implements PostRepository {
     String userId,
     String posterid,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       await postRemoteDataSource.awardpost(award, postId, userId, posterid);
       return right(null);

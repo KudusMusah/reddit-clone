@@ -61,8 +61,10 @@ class _AddModsScreenState extends State<AddModsScreen> {
         listener: (context, state) {
           if (state is CreateCommunityFailure) {
             showSnackBar(context, state.message);
+            Routemaster.of(context).pop();
           }
           if (state is CreateCommunitySuccess) {
+            showSnackBar(context, "Moderators updated");
             Routemaster.of(context).pop();
           }
         },

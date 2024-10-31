@@ -7,12 +7,17 @@ import 'package:reddit_clone/src/core/enums/karma.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/mappers/user_mapper.dart';
+import 'package:reddit_clone/src/core/network/internet_checker.dart';
 import 'package:reddit_clone/src/features/user_profiles/data/datasources/profile_remote_datasource.dart';
 import 'package:reddit_clone/src/features/user_profiles/domain/repository/profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final ProfileRemoteDataSource profileRemoteDataSource;
-  ProfileRepositoryImpl({required this.profileRemoteDataSource});
+  final InternetChecker internetChecker;
+  ProfileRepositoryImpl({
+    required this.profileRemoteDataSource,
+    required this.internetChecker,
+  });
 
   @override
   Future<Either<Failure, void>> editUserProfile(
@@ -21,6 +26,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
     File? profileImage,
     String name,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No internet connection"));
+    }
     try {
       UserModel user = UserMapper.entityToModel(profile);
       if (banner != null) {

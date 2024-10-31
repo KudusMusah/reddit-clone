@@ -7,6 +7,7 @@ import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_bloc/pos
 import 'package:reddit_clone/src/features/posts/presentation/bloc/posts_comments/posts_comments_bloc.dart';
 import 'package:reddit_clone/src/features/posts/presentation/widgets/comment_card.dart';
 import 'package:reddit_clone/src/features/user_profiles/presentation/bloc/profile_bloc.dart';
+import 'package:routemaster/routemaster.dart';
 
 class PostComments extends StatefulWidget {
   const PostComments({super.key, required this.id});
@@ -49,6 +50,7 @@ class _PostCommentsState extends State<PostComments> {
         listener: (context, state) {
           if (state is PostsFailure) {
             showSnackBar(context, state.message);
+            Routemaster.of(context).pop();
           }
         },
         builder: (context, state) {

@@ -7,6 +7,7 @@ import 'package:reddit_clone/src/core/common/entities/community_entity.dart';
 import 'package:reddit_clone/src/core/error/exceptions.dart';
 import 'package:reddit_clone/src/core/error/failure.dart';
 import 'package:reddit_clone/src/core/mappers/community_mapper.dart';
+import 'package:reddit_clone/src/core/network/internet_checker.dart';
 import 'package:reddit_clone/src/features/communities/data/datasources/community_remote_datasource.dart';
 import 'package:reddit_clone/src/core/common/models/community_model.dart';
 import 'package:reddit_clone/src/features/communities/domain/repository/community_repository.dart';
@@ -14,13 +15,20 @@ import 'package:reddit_clone/src/core/common/entities/post_entity.dart';
 
 class CommunityRepositoryImpl implements CommunityRepository {
   final CommunityRemoteDatasource communityRemoteDatasource;
-  CommunityRepositoryImpl({required this.communityRemoteDatasource});
+  final InternetChecker internetChecker;
+  CommunityRepositoryImpl({
+    required this.communityRemoteDatasource,
+    required this.internetChecker,
+  });
 
   @override
   Future<Either<Failure, void>> createCommunity(
     String name,
     String creatorUid,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       final community = CommunityModel(
         id: name,
@@ -53,6 +61,9 @@ class CommunityRepositoryImpl implements CommunityRepository {
     File? profileImage,
     File? bannerImage,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       CommunityModel comm = CommunityMapper.entityToModel(community);
 
@@ -126,6 +137,9 @@ class CommunityRepositoryImpl implements CommunityRepository {
     String communityName,
     List<String> mods,
   ) async {
+    if (!(await internetChecker.hasInternectConnection)) {
+      return left(Failure("No network conection"));
+    }
     try {
       await communityRemoteDatasource.updateMods(communityName, mods);
       return right(null);

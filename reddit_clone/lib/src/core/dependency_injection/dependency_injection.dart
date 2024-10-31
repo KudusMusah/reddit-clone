@@ -91,8 +91,10 @@ void _initCommunity() {
     )
     // Repository
     ..registerFactory<CommunityRepository>(
-      () =>
-          CommunityRepositoryImpl(communityRemoteDatasource: serviceLocator()),
+      () => CommunityRepositoryImpl(
+        communityRemoteDatasource: serviceLocator(),
+        internetChecker: InternetCheckerImpl(),
+      ),
     )
 
     // Usecases
@@ -172,6 +174,7 @@ void _initProfile() {
     ..registerFactory<ProfileRepository>(
       () => ProfileRepositoryImpl(
         profileRemoteDataSource: serviceLocator(),
+        internetChecker: InternetCheckerImpl(),
       ),
     ) // Usecases
     ..registerFactory(
@@ -206,6 +209,7 @@ void _initPosts() {
       () => PostRepositoryImpl(
         postRemoteDataSource: serviceLocator(),
         uuid: serviceLocator(),
+        internetChecker: InternetCheckerImpl(),
       ),
     ) // Usecases
     ..registerFactory(

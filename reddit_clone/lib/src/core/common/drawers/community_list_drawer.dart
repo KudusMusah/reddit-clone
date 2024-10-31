@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
+import 'package:reddit_clone/src/core/themes/app_colors.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CommunityListDrawer extends StatelessWidget {
@@ -31,6 +32,18 @@ class CommunityListDrawer extends StatelessWidget {
                 }
                 final communities =
                     (state as UserCommunitiesSucess).communities;
+
+                if (communities.isEmpty) {
+                  return ListTile(
+                    leading: Icon(
+                      Icons.do_not_disturb,
+                      color: AppColors.redColor,
+                    ),
+                    title: const Text("No communities"),
+                    subtitle:
+                        const Text("Create or search communities to join"),
+                  );
+                }
                 return Expanded(
                   child: ListView.builder(
                     itemCount: communities.length,

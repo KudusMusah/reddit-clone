@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/src/core/cubits/app_user/app_user_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/community/community_cubit.dart';
 import 'package:reddit_clone/src/core/cubits/theme/theme_cubit.dart';
+import 'package:reddit_clone/src/core/network/internet_checker.dart';
 import 'package:reddit_clone/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:reddit_clone/src/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:reddit_clone/src/features/auth/domain/repository/auth_repository.dart';

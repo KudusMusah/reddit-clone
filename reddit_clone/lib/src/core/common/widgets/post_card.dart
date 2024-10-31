@@ -40,6 +40,11 @@ class PostCard extends StatelessWidget {
               Routemaster.of(context).pop();
               showSnackBar(context, "Post awarded!");
             }
+
+            if (state is PostsFailure) {
+              showSnackBar(context, state.message);
+              Routemaster.of(context).pop();
+            }
           },
           builder: (context, state) {
             if (state is PostsLoading) {
